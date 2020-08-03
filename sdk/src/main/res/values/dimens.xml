@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="rbs_card_corner_radius">13dp</dimen>
+    <dimen name="rbs_card_elevation">8dp</dimen>
+    <dimen name="rbs_card_max_width">400dp</dimen>
+    <dimen name="rbs_card_padding">10dp</dimen>
+    <dimen name="rbs_card_selected_code_margin_right">18dp</dimen>
+    <dimen name="rbs_card_selected_code_margin_bottom">64dp</dimen>
+    <dimen name="rbs_form_card_margin">36dp</dimen>
+    <dimen name="rbs_form_padding">8dp</dimen>
+    <dimen name="rbs_form_card_icons_height">18dp</dimen>
+</resources>

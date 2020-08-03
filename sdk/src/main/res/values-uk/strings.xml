@@ -1,0 +1,23 @@
+<resources>
+    <string name="rbs_title_payment">Оплата</string>
+    <string name="rbs_title_card_list">Спосіб оплати</string>
+    <string name="rbs_title_sub_card_list">Збережені карти</string>
+    <string name="rbs_button_card_new">Оплатити новою картою</string>
+    <string name="rbs_card">Картка</string>
+    <string name="rbs_card_holder">ВЛАСНИК КАРТИ</string>
+    <string name="rbs_expiry">Термін дії картки</string>
+    <string name="rbs_cvc">Останні 3 цифри коду на смузі для підпису</string>
+    <string name="rbs_card_incorrect_length">Довжина номера картки повинна становити 16–19 цифр</string>
+    <string name="rbs_card_incorrect_number">Номер картки вказаний невірно</string>
+    <string name="rbs_card_incorrect_expiry">Термін дії картки зазначений неправильно</string>
+    <string name="rbs_card_incorrect_cvc">CVC2/CVV2 вказано невірно</string>
+    <string name="rbs_card_incorrect_card_holder">Власник картки вказаний невірно</string>
+    <string name="rbs_switch_view_title">Зберегти карту</string>
+    <string name="rbs_pay_by_card">Нова картка</string>
+    <string name="rbs_card_number">Номер картки</string>
+    <string name="rbs_card_expiry_placeholder">MM/YY</string>
+    <string name="rbs_done_button">Сплатити</string>
+    <string name="rbs_card_holder_placeholder">Ім\'я прізвище</string>
+    <string name="rbs_scan_back_button">Введіть дані вручну</string>
+    <string name="rbs_card_scan_message">Тримайте карту всередині рамки.\nВона буде зчитана автоматично.</string>
+</resources>

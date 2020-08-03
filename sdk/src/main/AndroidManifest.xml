@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="ru.rbs.mobile.payment.sdk">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-feature android:name="android.hardware.camera" android:required="false"/>
+    <application>
+        <activity
+            android:name=".ui.CardNewActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateAlwaysHidden|adjustResize"
+            android:theme="@style/RBSDefaultTheme" />
+
+        <activity
+            android:name=".ui.CardListActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateAlwaysHidden"
+            android:theme="@style/RBSDefaultTheme" />
+
+        <activity
+            android:name=".ui.CardSelectedActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateAlwaysHidden"
+            android:theme="@style/RBSDefaultTheme" />
+    </application>
+
+</manifest>

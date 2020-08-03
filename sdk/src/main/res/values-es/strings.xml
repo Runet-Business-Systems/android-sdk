@@ -1,0 +1,23 @@
+<resources>
+    <string name="rbs_title_payment">Pago</string>
+    <string name="rbs_title_card_list">Método de pago</string>
+    <string name="rbs_title_sub_card_list">Tarjetas guardadas</string>
+    <string name="rbs_button_card_new">Agregar nueva tarjeta</string>
+    <string name="rbs_card">Tarjeta</string>
+    <string name="rbs_card_holder">TENEDOR DE LA TARJETA</string>
+    <string name="rbs_card_holder_placeholder">Nombre</string>
+    <string name="rbs_card_number">Número de la tarjeta</string>
+    <string name="rbs_card_expiry_placeholder">MM/YY</string>
+    <string name="rbs_done_button">Pagar</string>
+    <string name="rbs_expiry">Validez de la tarjeta</string>
+    <string name="rbs_cvc">Últimas 3 cifras del código sobre la raya de la firma</string>
+    <string name="rbs_card_incorrect_length">La longitud del número de tarjeta debe ser de 16–19 dígitos.</string>
+    <string name="rbs_card_incorrect_number">Falso número indicado de la tarjeta</string>
+    <string name="rbs_card_incorrect_expiry">Falsa validez indicada de la tarjeta</string>
+    <string name="rbs_card_incorrect_cvc">Falso CVC2/CVV2 indicado</string>
+    <string name="rbs_card_incorrect_card_holder">Falso tenedor indicado de la tarjeta</string>
+    <string name="rbs_switch_view_title">Guardar tarjeta</string>
+    <string name="rbs_pay_by_card">Nueva tarjeta</string>
+    <string name="rbs_scan_back_button">Ingrese los detalles manualmente</string>
+    <string name="rbs_card_scan_message">Mantenga la tarjeta dentro del marco.\nSe leerá automáticamente.</string>
+</resources>

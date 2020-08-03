@@ -1,0 +1,242 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/rootLayout"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:scrollbars="none"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:context=".ui.CardNewActivity">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:title="Title" />
+
+        <ru.rbs.mobile.payment.sdk.ui.widget.BankCardView
+            android:id="@+id/bankCardView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/rbs_form_card_margin"
+            android:layout_marginEnd="@dimen/rbs_form_card_margin"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/toolbar" />
+
+        <ru.rbs.mobile.payment.sdk.ui.widget.BaseTextInputLayout
+            android:id="@+id/cardNumberInputLayout"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginStart="@dimen/rbs_form_padding"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="@dimen/rbs_form_padding"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/bankCardView">
+
+            <ru.rbs.mobile.payment.sdk.ui.widget.CardNumberEditText
+                android:id="@+id/cardNumberInput"
+                style="@style/RBSEditTextStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/rbs_card_number"
+                android:imeOptions="actionNext"
+                android:nextFocusDown="@id/cardExpiryInput"
+                tools:drawableRight="@drawable/ic_card">
+
+            </ru.rbs.mobile.payment.sdk.ui.widget.CardNumberEditText>
+        </ru.rbs.mobile.payment.sdk.ui.widget.BaseTextInputLayout>
+
+        <ru.rbs.mobile.payment.sdk.ui.widget.BaseTextInputLayout
+            android:id="@+id/cardExpiryInputLayout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/rbs_form_padding"
+            android:layout_marginTop="8dp"
+            android:orientation="vertical"
+            app:layout_constraintEnd_toStartOf="@+id/cardCodeInputLayout"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/cardNumberInputLayout">
+
+            <ru.rbs.mobile.payment.sdk.ui.widget.CardExpiryEditText
+                android:id="@+id/cardExpiryInput"
+                style="@style/RBSEditTextStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/rbs_card_expiry_placeholder"
+                android:imeOptions="actionNext"
+                android:nextFocusDown="@id/cardCodeInput" />
+
+        </ru.rbs.mobile.payment.sdk.ui.widget.BaseTextInputLayout>
+
+        <ru.rbs.mobile.payment.sdk.ui.widget.BaseTextInputLayout
+            android:id="@+id/cardCodeInputLayout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/rbs_form_padding"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="@dimen/rbs_form_padding"
+            app:layout_constraintBottom_toBottomOf="@+id/cardExpiryInputLayout"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/cardExpiryInputLayout"
+            app:layout_constraintTop_toBottomOf="@+id/cardNumberInputLayout"
+            app:layout_constraintVertical_bias="0.0">
+
+            <ru.rbs.mobile.payment.sdk.ui.widget.CardCodeEditText
+                android:id="@+id/cardCodeInput"
+                style="@style/RBSEditTextStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/rbs_code"
+                android:imeOptions="actionNext"
+                android:nextFocusDown="@id/cardHolderInput" />
+        </ru.rbs.mobile.payment.sdk.ui.widget.BaseTextInputLayout>
+
+        <androidx.constraintlayout.widget.Barrier
+            android:id="@+id/barrier"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:barrierDirection="bottom"
+            app:constraint_referenced_ids="cardExpiryInputLayout,cardCodeInputLayout"
+            tools:layout_editor_absoluteY="321dp" />
+
+        <ru.rbs.mobile.payment.sdk.ui.widget.BaseTextInputLayout
+            android:id="@+id/cardHolderInputLayout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/rbs_form_padding"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="@dimen/rbs_form_padding"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/barrier"
+            tools:visibility="visible">
+
+            <ru.rbs.mobile.payment.sdk.ui.widget.CardHolderEditText
+                android:id="@+id/cardHolderInput"
+                style="@style/RBSEditTextStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/rbs_card_holder_placeholder"
+                android:imeOptions="actionNext"
+                android:nextFocusDown="@id/doneButton" />
+
+        </ru.rbs.mobile.payment.sdk.ui.widget.BaseTextInputLayout>
+
+        <CheckBox
+            android:id="@+id/checkSaveCard"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/rbs_form_card_icons_height"
+            android:layout_marginStart="@dimen/rbs_form_padding"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="@dimen/rbs_form_padding"
+            android:checked="false"
+            android:padding="0dp"
+            android:text="@string/rbs_switch_view_title"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/cardHolderInputLayout"
+            tools:visibility="visible" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/linearLayout"
+            android:layout_width="0dp"
+            android:layout_height="24dp"
+            android:layout_marginStart="@dimen/rbs_form_padding"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="@dimen/rbs_form_padding"
+            android:layout_marginBottom="8dp"
+            android:gravity="center_vertical"
+            app:layout_constraintBottom_toTopOf="@+id/doneButton"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/checkSaveCard"
+            app:layout_constraintVertical_bias="0.49">
+
+            <ImageView
+                android:id="@+id/imageView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/imageView2"
+                app:layout_constraintHorizontal_chainStyle="spread_inside"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/ic_verify_visa_tds" />
+
+            <ImageView
+                android:id="@+id/imageView2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toBottomOf="@+id/imageView3"
+                app:layout_constraintEnd_toStartOf="@+id/imageView3"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/imageView"
+                app:layout_constraintTop_toTopOf="@+id/imageView3"
+                app:srcCompat="@drawable/ic_verify_mastercard_tds" />
+
+            <ImageView
+                android:id="@+id/imageView3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/imageView4"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/imageView2"
+                app:layout_constraintTop_toTopOf="@+id/imageView4"
+                app:srcCompat="@drawable/ic_verify_mir_td" />
+
+            <ImageView
+                android:id="@+id/imageView4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toBottomOf="@+id/imageView"
+                app:layout_constraintEnd_toStartOf="@+id/imageView5"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/imageView3"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/ic_verify_jcb_tds" />
+
+            <ImageView
+                android:id="@+id/imageView5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="6dp"
+                android:scaleType="fitEnd"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/imageView4"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/ic_verify_pci_tds" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <Button
+            android:id="@+id/doneButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/rbs_form_padding"
+            android:layout_marginEnd="@dimen/rbs_form_padding"
+            android:focusable="true"
+            android:text="@string/rbs_done_button"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <requestFocus />
+        </Button>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

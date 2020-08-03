@@ -1,0 +1,77 @@
+{
+  "version": "0.1",
+  "language": "en",
+  "maxNumberOfProblems": 100,
+  "import": [
+    "/usr/local/lib/node_modules/cspell-dict-es-es/cspell-ext.json",
+    "/usr/local/lib/node_modules/cspell-dict-fr-fr/cspell-ext.json",
+    "/usr/local/lib/node_modules/cspell-dict-russian/cspell-ext.json",
+    "/usr/local/lib/node_modules/cspell-dict-de-de/cspell-ext.json",
+    "/usr/local/lib/node_modules/cspell-dict-uk-ua/cspell-ext.json"
+  ],
+  "ignorePaths": [
+    "**/build/**",
+    "**/dist/**",
+    "**/.git/**",
+    ".git/**",
+    ".idea/**",
+    ".gradle/**",
+    "gradle/**",
+    "gradle*",
+    "config/**",
+    "build/**",
+    "*.svg",
+    "*.ttf",
+    "*.icon",
+    "*.ico",
+    "*.png",
+    "*.jpeg",
+    "**/drawable*",
+    "*.json",
+    "*.gradle",
+    "*.yml",
+    "*.kts",
+    "*.sh",
+    "*.log",
+    "*.aar",
+    "*.jar",
+    "*.bat",
+    "*.pro",
+    "local.properties"
+  ],
+  "dictionaries": [
+    "russian",
+    "es-es",
+    "de-de",
+    "fr-fr",
+    "uk-ua",
+    "en-us",
+    "common",
+    "kotlin",
+    "java",
+    "software",
+    "android"
+  ],
+  "dictionaryDefinitions": [
+    {
+      "name": "kotlin",
+      "path": "./kotlin.txt"
+    },
+    {
+      "name": "java",
+      "path": "./java.txt"
+    },
+    {
+      "name": "common",
+      "path": "./common.txt"
+    },
+    {
+      "name": "software",
+      "path": "./software.txt"
+    },
+    {
+      "name": "android",
+      "path": "./android.txt"
+    }
+  ]
+}

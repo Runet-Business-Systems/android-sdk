@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/rootLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:focusableInTouchMode="true"
+    android:focusable="true"
+    tools:context=".ui.CardSelectedActivity">
+    <requestFocus/>
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:title="Title" />
+
+    <ru.rbs.mobile.payment.sdk.ui.widget.BankCardView
+        android:id="@+id/bankCardView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar" />
+
+    <ru.rbs.mobile.payment.sdk.ui.widget.BaseTextInputLayout
+        android:id="@+id/cardCodeInputLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/rbs_card_selected_code_margin_right"
+        android:layout_marginBottom="@dimen/rbs_card_selected_code_margin_bottom"
+        android:background="@drawable/background_input_code"
+        android:paddingBottom="8dp"
+        app:errorEnabled="false"
+        app:layout_constraintBottom_toBottomOf="@+id/bankCardView"
+        app:layout_constraintEnd_toEndOf="@+id/bankCardView"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="@+id/bankCardView"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar"
+        app:layout_constraintVertical_bias="1.0">
+
+        <ru.rbs.mobile.payment.sdk.ui.widget.CardCodeEditText
+            android:id="@+id/cardCodeInput"
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="@android:color/transparent"
+            android:gravity="center"
+            android:hint="@string/rbs_code"
+            app:hintTextAppearance="@style/TextAppearance.AppCompat.Small" />
+    </ru.rbs.mobile.payment.sdk.ui.widget.BaseTextInputLayout>
+
+    <Button
+        android:id="@+id/doneButton"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/rbs_form_padding"
+        android:layout_marginEnd="@dimen/rbs_form_padding"
+        android:text="@string/rbs_done_button"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

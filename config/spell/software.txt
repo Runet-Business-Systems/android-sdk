@@ -1,0 +1,17 @@
+uuid
+Millis
+Luhn
+Serializable
+junit
+javax
+hamcrest
+mockk
+kotest
+comparables
+okhttp
+mockwebserver
+squareup
+Lunh
+allprojects
+PKCS
+jetbrains

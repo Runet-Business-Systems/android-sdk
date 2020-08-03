@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="rbs_card_padding">16dp</dimen>
+    <dimen name="rbs_form_card_margin">16dp</dimen>
+    <dimen name="rbs_form_padding">16dp</dimen>
+    <dimen name="rbs_card_selected_code_margin_right">24dp</dimen>
+    <dimen name="rbs_card_selected_code_margin_bottom">74dp</dimen>
+    <dimen name="rbs_form_card_icons_height">48dp</dimen>
+</resources>

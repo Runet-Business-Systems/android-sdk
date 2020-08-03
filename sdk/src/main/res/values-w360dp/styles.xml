@@ -1,0 +1,10 @@
+<resources>
+    <style name="RBSEditTextStyle" parent="Widget.AppCompat.EditText">
+        <item name="android:textAppearance">@style/TextAppearance.AppCompat.Medium</item>
+    </style>
+    <style name="RBSTextViewStyle" parent="Widget.AppCompat.TextView">
+        <item name="android:textAppearance">@style/TextAppearance.AppCompat.Medium</item>
+    </style>
+    <style name="RBSCardNumberTextAppearance" parent="TextAppearance.AppCompat.Large">
+    </style>
+</resources>

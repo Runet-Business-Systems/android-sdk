@@ -1,0 +1,214 @@
+variables:
+  CACHE_KEY: $CI_PROJECT_NAME
+  VERSION: $CI_COMMIT_SHORT_SHA
+
+stages:
+  - check
+  - buildSdk
+  - test
+  - buildApp
+  - packaging
+  - qa
+
+checkSpell:
+  stage: check
+  image: mdenissov/spell-checker-dict
+  script:
+    - cspell --config ./config/spell/cspell.json "**/*.*"
+  tags:
+    - docker
+
+checkDetekt:
+  stage: check
+  cache:
+    key: $CACHE_KEY
+    paths:
+      - .gradle/
+    policy: pull-push
+  variables:
+    GRADLE_OPTS: "-Dorg.gradle.daemon=false"
+  before_script:
+    - export GRADLE_USER_HOME=$(pwd)/.gradle
+    - chmod +x ./gradlew
+  script:
+    - ./gradlew -Pci --console=plain :sdk:detekt
+  tags:
+    - android
+
+sdk:
+  stage: buildSdk
+  cache:
+    key: $CACHE_KEY
+    paths:
+      - .gradle/
+    policy: pull-push
+  variables:
+    GRADLE_OPTS: "-Dorg.gradle.daemon=false"
+  before_script:
+    - export GRADLE_USER_HOME=$(pwd)/.gradle
+    - chmod +x ./gradlew
+  script:
+    - ./gradlew -Pci --console=plain :sdk:build -x test
+  tags:
+    - android
+  artifacts:
+    expire_in: 1 day
+    when: always
+    paths:
+      - sdk/build/
+
+unitTests:
+  stage: test
+  cache:
+    key: $CACHE_KEY
+    paths:
+      - .gradle/
+    policy: pull
+  variables:
+    GRADLE_OPTS: "-Dorg.gradle.daemon=false"
+  before_script:
+    - export GRADLE_USER_HOME=$(pwd)/.gradle
+    - chmod +x ./gradlew
+  script:
+    - ./gradlew :sdk:test
+  tags:
+    - android
+  artifacts:
+    expire_in: 1 day
+    when: always
+    paths:
+      - sdk/build/reports
+
+functionalTests:
+  stage: test
+  allow_failure: true
+  when: manual
+  cache:
+    key: $CACHE_KEY
+    paths:
+      - .gradle/
+    policy: pull
+  variables:
+    GRADLE_OPTS: "-Dorg.gradle.daemon=false"
+  before_script:
+    - export GRADLE_USER_HOME=$(pwd)/.gradle
+    - chmod +x ./gradlew
+  script:
+    - ./gradlew :sdk:spoonDebugAndroidTest
+  tags:
+    - android
+  artifacts:
+    expire_in: 1 day
+    when: always
+    paths:
+      - sdk/build/spoon-output
+
+appKotlin:
+  stage: buildApp
+  cache:
+    key: $CACHE_KEY
+    paths:
+      - .gradle/
+    policy: pull-push
+  variables:
+    GRADLE_OPTS: "-Dorg.gradle.daemon=false"
+  dependencies:
+    - sdk
+  before_script:
+    - export GRADLE_USER_HOME=$(pwd)/.gradle
+    - chmod +x ./gradlew
+    - mkdir -p app_kotlin/libs/ && cp sdk/build/outputs/aar/sdk-release.aar app_kotlin/libs/
+  script:
+    - ./gradlew -Pci --console=plain :app_kotlin:build
+  tags:
+    - android
+  artifacts:
+    expire_in: 1 day
+    paths:
+      - app_kotlin/build/
+
+appJava:
+  stage: buildApp
+  image: mdenissov/android:29-29.0.2
+  cache:
+    key: $CACHE_KEY
+    paths:
+      - .gradle/
+    policy: pull-push
+  variables:
+    GRADLE_OPTS: "-Dorg.gradle.daemon=false"
+  dependencies:
+    - sdk
+  before_script:
+    - export GRADLE_USER_HOME=$(pwd)/.gradle
+    - chmod +x ./gradlew
+    - mkdir -p app_java/libs/ && cp sdk/build/outputs/aar/sdk-release.aar app_java/libs/
+  script:
+    - ./gradlew -Pci --console=plain :app_java:build
+  tags:
+    - android
+  artifacts:
+    expire_in: 1 day
+    paths:
+      - app_java/build/
+
+product:
+  stage: packaging
+  image: alpine:3.12.0
+  dependencies:
+    - sdk
+    - appJava
+    - appKotlin
+    - functionalTests
+  before_script:
+    - apk --no-cache add zip
+  script:
+    - mkdir -p product/samples
+    - mkdir -p product/reports
+    - cp sdk/build/outputs/aar/sdk-release.aar product
+    - mkdir -p app_java/libs/ && cp sdk/build/outputs/aar/sdk-release.aar app_java/libs/
+    - mkdir -p app_kotlin/libs/ && cp sdk/build/outputs/aar/sdk-release.aar app_kotlin/libs/
+    - cp app_java/build/outputs/apk/debug/*.apk product/samples
+    - cp app_kotlin/build/outputs/apk/debug/*.apk product/samples
+    - rm -r app_java/build
+    - rm -r app_kotlin/build
+    - cp -r app_java product/samples
+    - cp -r app_kotlin product/samples
+    - cp -r documentation product/
+    - cp -r sdk/build/spoon-output/ product/reports
+    - zip -r product.zip product
+  tags:
+    - docker
+  artifacts:
+    expire_in: 5 day
+    paths:
+      - product.zip
+      - product
+
+qaBuildDelivery:
+  stage: qa
+  when: manual
+  image: appropriate/curl:3.1
+  dependencies:
+    - product
+  before_script:
+    - ls -l ./
+  script:
+    - curl "https://upload.diawi.com/" -F token=$DIAWI_TOKEN -F file=@\"product/samples/app_kotlin-debug.apk\" -F callback_email=$QA_EMAIL
+  tags:
+    - docker
+
+qaProductDelivery:
+  stage: qa
+  when: manual
+  image: appropriate/curl:3.1
+  dependencies:
+    - product
+  before_script:
+    - ls -l ./
+  script:
+    - export PRODUCT_FILE_NAME=product-$VERSION.zip
+    - mv product.zip $PRODUCT_FILE_NAME
+    - curl "https://srv-file5.gofile.io/upload" -F filesUploaded=@\"$PRODUCT_FILE_NAME\" -F email=rbs-android-sdk-qa@intabia.ru -F expire=$(date -v+48H +%s)
+  tags:
+    - docker

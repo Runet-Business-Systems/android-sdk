@@ -1,0 +1,25 @@
+<resources>
+    <string name="rbs_title_payment">Payment</string>
+    <string name="rbs_title_card_list">Payment method</string>
+    <string name="rbs_title_sub_card_list">Saved Cards</string>
+    <string name="rbs_button_card_new">Pay with a new card</string>
+    <string name="rbs_card">Card</string>
+    <string name="rbs_card_holder">CARDHOLDER</string>
+    <string name="rbs_card_holder_placeholder">Name</string>
+    <string name="rbs_card_number">Number</string>
+    <string name="rbs_card_expiry_placeholder">MM/YY</string>
+    <string name="rbs_done_button">Submit payment</string>
+    <string name="rbs_scan_back_button">Enter details manually</string>
+    <string name="rbs_expiry">Card expiry date</string>
+    <string name="rbs_cvc">Last three code digits on the signature line</string>
+    <string name="rbs_code" translatable="false">CVC2/CVV2</string>
+    <string name="rbs_card_incorrect_length">Card number length should be 16–19 digit</string>
+    <string name="rbs_card_incorrect_number">The card number is incorrect</string>
+    <string name="rbs_card_incorrect_expiry">Card expiry date is incorrect</string>
+    <string name="rbs_card_incorrect_cvc">CVC2/CVV2 is incorrect</string>
+    <string name="rbs_card_incorrect_card_holder">The card holder is incorrect</string>
+    <string name="rbs_switch_view_title">Save card</string>
+    <string name="rbs_pay_by_card">New card</string>
+    <string name="rbs_card_list_pan_pattern" translatable="false">•• %s</string>
+    <string name="rbs_card_scan_message">Keep the card inside the frame.\nIt will be read automatically.</string>
+</resources>

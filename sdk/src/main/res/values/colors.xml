@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="rbs_color_primary">#2C98F0</color>
+    <color name="rbs_color_primaryDark">#2176BC</color>
+    <color name="rbs_color_accent">#2C98F0</color>
+    <color name="rbs_color_main_background">#FFFFFF</color>
+    <color name="rbs_color_button_text">#FFFFFF</color>
+    <color name="rbs_color_text">#808084</color>
+    <color name="rbs_color_shadow">#AA808084</color>
+    <color name="rbs_color_card_background">#FFFFFF</color>
+</resources>
