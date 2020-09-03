@@ -13,6 +13,7 @@ import org.junit.Test
 import ru.rbs.mobile.payment.sdk.R
 import ru.rbs.mobile.payment.sdk.test.core.CoreUIViewTest
 import ru.rbs.mobile.payment.sdk.test.espresso.ExactViewMatcher.Companion.exactView
+import ru.rbs.mobile.payment.sdk.test.junit.ConfigurationSingle
 import ru.rbs.mobile.payment.sdk.utils.onDisplayError
 
 class CardCodeEditTextTest : CoreUIViewTest<CardCodeEditText>() {
@@ -20,7 +21,7 @@ class CardCodeEditTextTest : CoreUIViewTest<CardCodeEditText>() {
     override fun prepareView(context: Context): CardCodeEditText {
         return CardCodeEditText(context).apply {
             showError = true
-            hint = getTargetString(R.string.rbs_code)
+            hint = getString(R.string.rbs_code)
         }
     }
 
@@ -32,6 +33,7 @@ class CardCodeEditTextTest : CoreUIViewTest<CardCodeEditText>() {
     }
 
     @Test
+    @ConfigurationSingle
     fun shouldNotAllowTypeLatin() {
         onView(exactView(testedView)).perform(typeText("abcDe"))
         takeScreen()
@@ -40,6 +42,7 @@ class CardCodeEditTextTest : CoreUIViewTest<CardCodeEditText>() {
     }
 
     @Test
+    @ConfigurationSingle
     fun shouldNotAllowTypeCyrillic() {
         onView(exactView(testedView)).perform(replaceText("абГд"))
         takeScreen()
@@ -48,6 +51,7 @@ class CardCodeEditTextTest : CoreUIViewTest<CardCodeEditText>() {
     }
 
     @Test
+    @ConfigurationSingle
     fun shouldNotAllowTypeMoreThenMaxLength() {
         onView(exactView(testedView)).perform(typeText("1225"))
         takeScreen()
@@ -56,6 +60,7 @@ class CardCodeEditTextTest : CoreUIViewTest<CardCodeEditText>() {
     }
 
     @Test
+    @ConfigurationSingle
     fun shouldMaskInput() {
         onView(exactView(testedView)).perform(typeText("012"))
         takeScreen()
@@ -64,6 +69,7 @@ class CardCodeEditTextTest : CoreUIViewTest<CardCodeEditText>() {
     }
 
     @Test
+    @ConfigurationSingle
     fun shouldWorkBackspace() {
         onView(exactView(testedView)).perform(typeText("012"))
         takeScreen()

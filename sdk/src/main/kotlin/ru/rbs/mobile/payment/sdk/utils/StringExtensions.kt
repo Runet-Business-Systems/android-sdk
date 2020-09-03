@@ -76,3 +76,18 @@ fun String.toExpDate(): ExpiryDate = digitsOnly().let {
         expYear = it.substring(2, 4).toInt() + (Calendar.getInstance().get(Calendar.YEAR) % 100)
     )
 }
+
+/**
+ * Преобразует дату в сроку формата MM/YY.
+ *
+ * @return информацию о сроке действия карты.
+ */
+@Suppress("MagicNumber")
+fun Date.toStringExpDate(): String {
+    val calendar = Calendar.getInstance()
+    calendar.time = this
+    val month = (calendar.get(Calendar.MONTH) + 1).toString()
+        .padStart(2, '0')
+    val year = calendar.get(Calendar.YEAR) % 100
+    return "$month/$year"
+}

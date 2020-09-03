@@ -33,6 +33,25 @@ allprojects {
     }
 }
 
-tasks.register("clean", Delete::class) {
-    delete(rootProject.buildDir)
+tasks {
+    val clean = register("clean", Delete::class) {
+        delete(rootProject.buildDir)
+    }
+
+    val copyGitHooks = register<Task>("copyGitHooks") {
+        copy {
+            from(file("config/git/hooks")) {
+                rename {
+                    if (!it.startsWith("script")) {
+                        it.removeSuffix(".sh")
+                    } else it
+                }
+            }
+            into(file(".git/hooks"))
+        }
+    }
+
+    clean {
+        dependsOn(copyGitHooks)
+    }
 }

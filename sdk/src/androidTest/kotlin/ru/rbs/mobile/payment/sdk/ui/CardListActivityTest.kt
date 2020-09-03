@@ -1,6 +1,5 @@
 package ru.rbs.mobile.payment.sdk.ui
 
-import androidx.appcompat.app.AppCompatActivity
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.swipeUp
 import androidx.test.espresso.assertion.ViewAssertions.matches
@@ -8,33 +7,19 @@ import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.platform.app.InstrumentationRegistry
-import androidx.test.rule.ActivityTestRule
-import org.junit.Rule
 import org.junit.Test
-import org.junit.rules.RuleChain
 import ru.rbs.mobile.payment.sdk.R
 import ru.rbs.mobile.payment.sdk.model.Card
 import ru.rbs.mobile.payment.sdk.test.PaymentConfigTestProvider.defaultConfig
 import ru.rbs.mobile.payment.sdk.test.SleepEmulator.sleep
 import ru.rbs.mobile.payment.sdk.test.core.CoreUITest
-import ru.rbs.mobile.payment.sdk.test.junit.LocaleRule
-import ru.rbs.mobile.payment.sdk.ui.helper.Locales
+import ru.rbs.mobile.payment.sdk.test.junit.ConfigurationLocales
 
-class CardListActivityTest : CoreUITest() {
-
-    private val localeRule =
-        LocaleRule(Locales.availableLocales())
-
-    private val activityTestRule = ActivityTestRule(CardListActivity::class.java, true, false)
-
-    override fun getActivity(): AppCompatActivity = activityTestRule.activity
-
-    @get:Rule
-    val ruleChain = RuleChain.outerRule(localeRule)
-        .around(activityTestRule)
-        .around(spoonRule)
+class CardListActivityTest :
+    CoreUITest<CardListActivity>(CardListActivity::class.java, true, false) {
 
     @Test
+    @ConfigurationLocales(["en"])
     fun shouldRunWithLongCardList() {
         val config = defaultConfig().copy(
             cards = setOf(

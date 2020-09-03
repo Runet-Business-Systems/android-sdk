@@ -5,9 +5,11 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
-import kotlinx.android.synthetic.main.activity_card_new.*
 import kotlinx.android.synthetic.main.activity_card_new.bankCardView
-import kotlinx.android.synthetic.main.list_item_card_saved.view.*
+import kotlinx.android.synthetic.main.activity_card_new.cardCodeInput
+import kotlinx.android.synthetic.main.activity_card_new.doneButton
+import kotlinx.android.synthetic.main.activity_card_new.toolbar
+import kotlinx.android.synthetic.main.list_item_card_saved.view.cardExpiry
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import ru.rbs.mobile.payment.sdk.Constants
@@ -31,10 +33,10 @@ class CardSelectedActivity : BaseActivity() {
 
     private var cryptogramProcessor: CryptogramProcessor = SDKPayment.cryptogramProcessor
     private val config: PaymentConfig by lazy {
-        intent.getSerializableExtra(Constants.INTENT_EXTRA_CONFIG) as PaymentConfig
+        intent.getParcelableExtra<PaymentConfig>(Constants.INTENT_EXTRA_CONFIG) as PaymentConfig
     }
     private val card: Card by lazy {
-        intent.getSerializableExtra(Constants.INTENT_EXTRA_CARD) as Card
+        intent.getParcelableExtra<Card>(Constants.INTENT_EXTRA_CARD) as Card
     }
     private val cardResolver: CardResolver by lazy {
         CardResolver(
@@ -86,26 +88,32 @@ class CardSelectedActivity : BaseActivity() {
         }
     }
 
+    @Suppress("TooGenericExceptionCaught")
     private fun preparePaymentData() {
         workScope.launch(Dispatchers.Main) {
-            val cryptogram = cryptogramProcessor.create(
-                order = config.order,
-                uuid = config.uuid,
-                timestamp = config.timestamp,
-                cardInfo = CardInfo(
-                    identifier = CardBindingIdIdentifier(card.bindingId),
-                    cvv = cardCodeInput.text.toString().toIntOrNull()
-                )
-            )
-            finishWithResult(
-                PaymentData(
-                    status = PaymentDataStatus.SUCCEEDED,
-                    cryptogram = cryptogram,
-                    info = PaymentInfoBindCard(
-                        bindingId = card.bindingId
+            try {
+                val cryptogram = cryptogramProcessor.create(
+                    order = config.order,
+                    uuid = config.uuid,
+                    timestamp = config.timestamp,
+                    cardInfo = CardInfo(
+                        identifier = CardBindingIdIdentifier(card.bindingId),
+                        cvv = cardCodeInput.text.toString().toIntOrNull()
                     )
                 )
-            )
+                finishWithResult(
+                    PaymentData(
+                        status = PaymentDataStatus.SUCCEEDED,
+                        cryptogram = cryptogram,
+                        info = PaymentInfoBindCard(
+                            order = config.order,
+                            bindingId = card.bindingId
+                        )
+                    )
+                )
+            } catch (e: Exception) {
+                finishWithError(exception = e)
+            }
         }
     }
 
@@ -117,7 +125,7 @@ class CardSelectedActivity : BaseActivity() {
          * @param context для подготовки intent.
          * @param config конфигурация оплаты.
          */
-        public fun prepareIntent(
+        fun prepareIntent(
             context: Context,
             config: PaymentConfig,
             card: Card

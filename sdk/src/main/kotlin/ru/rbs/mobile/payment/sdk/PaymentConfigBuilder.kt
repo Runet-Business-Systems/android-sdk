@@ -4,7 +4,9 @@ import ru.rbs.mobile.payment.sdk.model.CameraScannerOptions
 import ru.rbs.mobile.payment.sdk.model.Card
 import ru.rbs.mobile.payment.sdk.model.CardSaveOptions
 import ru.rbs.mobile.payment.sdk.model.HolderInputOptions
+import ru.rbs.mobile.payment.sdk.model.NfcScannerOptions
 import ru.rbs.mobile.payment.sdk.model.PaymentConfig
+import ru.rbs.mobile.payment.sdk.model.Theme
 import java.util.*
 
 /**
@@ -12,12 +14,15 @@ import java.util.*
  *
  * @param order идентификатор оплачиваемого заказа.
  */
+@Suppress("TooManyFunctions")
 class PaymentConfigBuilder(private val order: String) {
     private var buttonText: String? = null
     private var cards: Set<Card> = emptySet()
     private var cardSaveOptions: CardSaveOptions = CardSaveOptions.HIDE
     private var holderInputOptions: HolderInputOptions = HolderInputOptions.HIDE
     private var cameraScannerOptions: CameraScannerOptions = CameraScannerOptions.ENABLED
+    private var theme: Theme = Theme.DEFAULT
+    private var nfcScannerOptions: NfcScannerOptions = NfcScannerOptions.ENABLED
     private var uuid: String = UUID.randomUUID().toString()
     private var timestamp: Long = System.currentTimeMillis()
     private var locale: Locale = Locale.getDefault()
@@ -60,7 +65,7 @@ class PaymentConfigBuilder(private val order: String) {
     }
 
     /**
-     * Опция управления функционалом сканирования карты.
+     * Опция управления функционалом сканирования карты через камеру.
      *
      * Опционально, по умолчанию ENABLED
      *
@@ -69,6 +74,30 @@ class PaymentConfigBuilder(private val order: String) {
      */
     fun cameraScannerOptions(options: CameraScannerOptions): PaymentConfigBuilder = apply {
         this.cameraScannerOptions = options
+    }
+
+    /**
+     * Опция управления функционалом сканирования карты через NFC.
+     *
+     * Опционально, по умолчанию ENABLED
+     *
+     * @param options настройка функции сканирования карты.
+     * @return текущий конструктор.
+     */
+    fun nfcScannerOptions(options: NfcScannerOptions): PaymentConfigBuilder = apply {
+        this.nfcScannerOptions = options
+    }
+
+    /**
+     * Опция управления темой интерфейса.
+     *
+     * Опционально, по умолчанию SYSTEM.
+     *
+     * @param theme настройка функции сканирования карты.
+     * @return текущий конструктор.
+     */
+    fun theme(theme: Theme): PaymentConfigBuilder = apply {
+        this.theme = theme
     }
 
     /**
@@ -141,6 +170,8 @@ class PaymentConfigBuilder(private val order: String) {
         cardSaveOptions = this.cardSaveOptions,
         holderInputOptions = this.holderInputOptions,
         cameraScannerOptions = this.cameraScannerOptions,
+        theme = this.theme,
+        nfcScannerOptions = this.nfcScannerOptions,
         cards = this.cards,
         uuid = this.uuid,
         timestamp = this.timestamp,

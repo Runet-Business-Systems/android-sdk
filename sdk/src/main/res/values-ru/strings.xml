@@ -3,15 +3,11 @@
     <string name="rbs_title_card_list">Способ оплаты</string>
     <string name="rbs_title_sub_card_list">Сохраненные карты</string>
     <string name="rbs_button_card_new">Оплатить новой картой</string>
-    <string name="rbs_card">Карта</string>
     <string name="rbs_card_holder">ВЛАДЕЛЕЦ КАРТЫ</string>
     <string name="rbs_card_holder_placeholder">Имя фамилия</string>
     <string name="rbs_card_number">Номер карты</string>
     <string name="rbs_card_expiry_placeholder">MM/YY</string>
     <string name="rbs_done_button">Оплатить</string>
-    <string name="rbs_scan_back_button">Ввести данные карты вручную</string>
-    <string name="rbs_expiry">Срок действия карты</string>
-    <string name="rbs_cvc">Последние 3 цифры кода на полосе для подписи</string>
     <string name="rbs_card_incorrect_length">Длина номера карты должна быть 16–19 цифр</string>
     <string name="rbs_card_incorrect_number">Номер карты указан неверно</string>
     <string name="rbs_card_incorrect_expiry">Срок действия карты указан неверно</string>
@@ -19,5 +15,11 @@
     <string name="rbs_card_incorrect_card_holder">Владелец карты указан неверно</string>
     <string name="rbs_card_scan_message">Держите карту внутри рамки.\n Она будет считана автоматически.</string>
     <string name="rbs_switch_view_title">Сохранить карту</string>
-    <string name="rbs_pay_by_card">Новая карта</string>
+    <string name="rbs_nfc_do_not_move_card">Не убирайте карту</string>
+    <string name="rbs_nfc_hold_card_to_phone">Поднесите карту к обратной стороне телефона</string>
+    <string name="rbs_enable">Включить</string>
+    <string name="rbs_cancel">Отмена</string>
+    <string name="rbs_nfc_disabled_title">NFC отключен</string>
+    <string name="rbs_nfc_disabled_message">Для считывания данных карты по NFC необходимо включить NFC на телефоне. Хотите включить NFC на телефоне?</string>
+    <string name="rbs_nfc_read_error">Ошибка чтения данных карты</string>
 </resources>

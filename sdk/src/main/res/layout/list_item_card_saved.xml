@@ -50,5 +50,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        android:contentDescription="@string/go_to_confirmation_screen_content_description"
         app:srcCompat="@drawable/ic_arrow_right" />
 </androidx.constraintlayout.widget.ConstraintLayout>

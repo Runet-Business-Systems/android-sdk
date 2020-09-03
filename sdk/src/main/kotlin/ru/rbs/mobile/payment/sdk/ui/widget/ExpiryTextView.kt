@@ -44,7 +44,7 @@ class ExpiryTextView @JvmOverloads constructor(
 
     companion object {
         private const val EXPIRY_MASK_DIVIDER_INDEX = 2
-        private const val EXPIRY_MASK_DIVIDER = " / "
+        private const val EXPIRY_MASK_DIVIDER = "/"
         private const val EXPIRY_MASK = "••${EXPIRY_MASK_DIVIDER}••"
         private const val EXPIRY_MASK_LENGTH = 4
         private const val EXPIRY_YEAR_DIVIDER = 100

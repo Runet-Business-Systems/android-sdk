@@ -1,5 +1,6 @@
 package ru.rbs.mobile.payment.sdk.component.impl
 
+import android.util.Base64
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import ru.rbs.mobile.payment.sdk.component.CryptogramCipher
@@ -34,5 +35,9 @@ class DefaultCryptogramProcessor(
             cardInfo = cardInfo
         )
         cryptogramCipher.encode(paymentString, key)
+    }
+
+    override suspend fun create(googlePayToken: String): String = withContext(Dispatchers.IO) {
+        Base64.encodeToString(googlePayToken.toByteArray(), Base64.NO_WRAP)
     }
 }

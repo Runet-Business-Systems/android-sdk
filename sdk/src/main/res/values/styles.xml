@@ -4,12 +4,41 @@
         <item name="colorPrimary">@color/rbs_color_primary</item>
         <item name="colorPrimaryDark">@color/rbs_color_primaryDark</item>
         <item name="colorAccent">@color/rbs_color_accent</item>
+        <item name="android:alertDialogTheme">@style/RBSAlertDialogTheme</item>
         <item name="android:windowBackground">@color/rbs_color_main_background</item>
         <item name="android:statusBarColor">@color/rbs_color_main_background</item>
         <item name="android:buttonStyle">@style/RBSBrandButtonStyle</item>
         <item name="android:editTextStyle">@style/RBSEditTextStyle</item>
         <item name="android:textViewStyle">@style/RBSTextViewStyle</item>
         <item name="android:listDivider">@drawable/list_divider_default</item>
+        <item name="android:textColorHint">@color/rbs_color_hint_text</item>
+        <item name="android:checkboxStyle">@style/RBSCheckBoxStyle</item>
+    </style>
+
+    <style name="RBSTransparentTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:inAnimation">@null</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:backgroundDimEnabled">false</item>
+    </style>
+
+    <style name="RBSAlertDialogTheme" parent="Theme.AppCompat.Dialog.Alert">
+        <item name="android:background">@color/rbs_color_main_background</item>
+        <item name="android:textColor">@color/rbs_color_text</item>
+        <item name="android:colorAccent">@color/rbs_color_text</item>
+        <item name="android:textColorPrimary">@color/rbs_color_text</item>
+        <item name="android:buttonBarNegativeButtonStyle">@style/RBSNegativeButtonStyle</item>
+        <item name="android:buttonBarPositiveButtonStyle">@style/RBSPositiveButtonStyle</item>
+    </style>
+
+    <style name="RBSNegativeButtonStyle" parent="Widget.AppCompat.Button.ButtonBar.AlertDialog">
+        <item name="android:textColor">@color/rbs_color_accent</item>
+    </style>
+
+    <style name="RBSPositiveButtonStyle" parent="Widget.AppCompat.Button.ButtonBar.AlertDialog">
+        <item name="android:textColor">@color/rbs_color_accent</item>
     </style>
 
     <style name="RBSBrandButtonStyle" parent="Widget.AppCompat.Button.Colored">
@@ -17,8 +46,18 @@
         <item name="android:textColor">@color/rbs_color_button_text</item>
     </style>
 
+    <style name="RBSTextAppearanceError" parent="TextAppearance.Design.Error">
+        <item name="android:textColor">@color/rbs_color_error_text</item>
+    </style>
+
     <style name="RBSEditTextStyle" parent="Widget.AppCompat.EditText">
         <item name="android:textAppearance">@style/TextAppearance.AppCompat.Small</item>
+        <item name="android:textColor">@color/rbs_color_text</item>
+    </style>
+
+    <style name="RBSCheckBoxStyle" parent="Widget.AppCompat.CompoundButton.CheckBox">
+        <item name="android:textAppearance">@style/TextAppearance.AppCompat.Small</item>
+        <item name="android:textColor">@color/rbs_color_text</item>
     </style>
 
     <style name="RBSTextViewStyle" parent="Widget.AppCompat.TextView">
@@ -26,6 +65,14 @@
         <item name="android:textColor">@color/rbs_color_text</item>
     </style>
 
-    <style name="RBSCardNumberTextAppearance" parent="TextAppearance.AppCompat.Medium">
+    <style name="RBSCardNumberTextAppearance" parent="TextAppearance.AppCompat.Medium"/>
+
+    <style name="RBSTextInputLayoutAppearance" parent="Widget.Design.TextInputLayout">
+        <item name="errorTextAppearance">@style/RBSTextAppearanceError</item>
+    </style>
+
+    <style name="RBSWindowAnimationFadeInOut">
+        <item name="android:windowEnterAnimation">@anim/fade_in</item>
+        <item name="android:windowExitAnimation">@anim/fade_out</item>
     </style>
 </resources>

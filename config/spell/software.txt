@@ -15,3 +15,6 @@ Lunh
 allprojects
 PKCS
 jetbrains
+emvnfccard
+transceive
+devnied

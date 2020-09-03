@@ -15,6 +15,7 @@ import java.util.Set;
 
 import ru.rbs.mobile.payment.sdk.PaymentConfigBuilder;
 import ru.rbs.mobile.payment.sdk.ResultCallback;
+import ru.rbs.mobile.payment.sdk.SDKException;
 import ru.rbs.mobile.payment.sdk.SDKPayment;
 import ru.rbs.mobile.payment.sdk.model.CameraScannerOptions;
 import ru.rbs.mobile.payment.sdk.model.Card;
@@ -25,6 +26,7 @@ import ru.rbs.mobile.payment.sdk.model.PaymentConfig;
 import ru.rbs.mobile.payment.sdk.model.PaymentData;
 import ru.rbs.mobile.payment.sdk.model.PaymentInfo;
 import ru.rbs.mobile.payment.sdk.model.PaymentInfoBindCard;
+import ru.rbs.mobile.payment.sdk.model.PaymentInfoGooglePay;
 import ru.rbs.mobile.payment.sdk.model.PaymentInfoNewCard;
 
 
@@ -96,6 +98,9 @@ public class MainActivity extends AppCompatActivity {
                     } else if (info instanceof PaymentInfoBindCard) {
                         PaymentInfoBindCard bindCard = (PaymentInfoBindCard) info;
                         log("Saved card " + bindCard);
+                    }else if (info instanceof PaymentInfoGooglePay) {
+                        PaymentInfoGooglePay googlePay = (PaymentInfoGooglePay) info;
+                        log("Google pay " + googlePay);
                     }
                     log(result.toString());
                 } else if (result.getStatus().isCanceled()) {
@@ -104,9 +109,9 @@ public class MainActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFail(Exception e) {
+            public void onFail(SDKException e) {
                 // Возникла ошибка.
-                log(e.toString());
+                log(e.getMessage() + " " + e.getCause());
             }
         });
     }

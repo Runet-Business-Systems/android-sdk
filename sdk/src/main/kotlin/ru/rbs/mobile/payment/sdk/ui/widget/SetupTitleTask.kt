@@ -22,7 +22,7 @@ internal class SetupTitleTask(
             val inputStream: InputStream = urlConnection.inputStream
             SVG.getFromInputStream(inputStream)
         } catch (e: Exception) {
-            Log.e("RBSSDK", e.message)
+            Log.e("RBSSDK", e.message ?: e.toString())
             e.printStackTrace()
             null
         }

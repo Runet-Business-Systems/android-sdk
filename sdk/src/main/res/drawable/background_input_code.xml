@@ -3,6 +3,6 @@
     <stroke
         android:width="0.5dp"
         android:color="#B7BBBF" />
-    <solid android:color="@color/rbs_color_main_background"/>
+    <solid android:color="@color/rbs_color_saved_card_cvc_background"/>
     <corners android:radius="4dp" />
 </shape>

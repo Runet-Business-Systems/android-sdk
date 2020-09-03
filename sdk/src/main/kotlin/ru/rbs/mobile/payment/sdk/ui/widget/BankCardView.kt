@@ -1,7 +1,6 @@
 package ru.rbs.mobile.payment.sdk.ui.widget
 
 import android.content.Context
-import android.graphics.Color
 import android.graphics.Rect
 import android.graphics.drawable.GradientDrawable
 import android.graphics.drawable.LayerDrawable
@@ -12,7 +11,11 @@ import android.view.View
 import android.view.View.MeasureSpec.EXACTLY
 import android.widget.FrameLayout
 import androidx.core.content.ContextCompat.getColor
-import kotlinx.android.synthetic.main.layout_bank_card.view.*
+import kotlinx.android.synthetic.main.layout_bank_card.view.cardBankLogo
+import kotlinx.android.synthetic.main.layout_bank_card.view.cardExpiry
+import kotlinx.android.synthetic.main.layout_bank_card.view.cardHolder
+import kotlinx.android.synthetic.main.layout_bank_card.view.cardNumber
+import kotlinx.android.synthetic.main.layout_bank_card.view.cardSystem
 import ru.rbs.mobile.payment.sdk.R
 import ru.rbs.mobile.payment.sdk.model.ExpiryDate
 import ru.rbs.mobile.payment.sdk.ui.helper.CardLogoAssetsResolver
@@ -84,7 +87,7 @@ class BankCardView @JvmOverloads constructor(
 
         val shapeDrawable = ShapeDrawable().apply {
             setPadding(shapeDrawablePadding)
-            paint.color = Color.TRANSPARENT
+            paint.color = shadowColor
             paint.setShadowLayer(
                 cornerRadius / 2,
                 0f,

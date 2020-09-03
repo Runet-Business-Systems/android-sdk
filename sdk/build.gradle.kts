@@ -4,8 +4,9 @@ plugins {
     id("com.android.library")
     kotlin("android")
     kotlin("android.extensions")
-    id("io.gitlab.arturbosch.detekt") version "1.8.0"
     id("com.jaredsburrows.spoon")
+    id("jacoco")
+    id("plugins.jacoco-report")
 }
 
 android {
@@ -14,11 +15,11 @@ android {
         targetCompatibility = JavaVersion.VERSION_1_8
     }
 
-    compileSdkVersion(29)
+    compileSdkVersion(30)
 
     defaultConfig {
         minSdkVersion(21)
-        targetSdkVersion(29)
+        targetSdkVersion(30)
         multiDexEnabled = true
         versionCode = 1
         versionName = "1.0"
@@ -29,6 +30,10 @@ android {
         getByName("release") {
             isMinifyEnabled = false
             proguardFiles(getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro")
+            isTestCoverageEnabled = true
+        }
+        getByName("debug") {
+            isTestCoverageEnabled = true
         }
     }
 
@@ -55,6 +60,7 @@ android {
     testOptions {
         unitTests.apply {
             isIncludeAndroidResources = true
+            isReturnDefaultValues = true
         }
     }
 }
@@ -66,57 +72,40 @@ spoon {
     noAnimations = true
 }
 
-detekt {
-    toolVersion = "1.8.0"
-    input = files("src/main/kotlin", "src/test/kotlin", "src/androidTest/kotlin")
-    parallel = true
-    config = files("../config/detekt/detekt.yml")
-    reports {
-        xml {
-            enabled = true
-            destination = file("build/reports/detekt.xml")
-        }
-        html {
-            enabled = true
-            destination = file("build/reports/detekt.html")
-        }
-    }
+jacoco {
+    toolVersion = "0.8.4"
 }
 
 dependencies {
-    implementation("org.jetbrains.kotlin:kotlin-stdlib:1.3.72")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.7")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.7")
-    implementation("androidx.appcompat:appcompat:1.1.0")
-    implementation("androidx.constraintlayout:constraintlayout:1.1.3")
-    implementation("com.google.android.material:material:1.2.0-beta01")
-    implementation("io.card:android-sdk:5.5.1")
-    implementation("com.caverock:androidsvg-aar:1.4")
+    implementation(Libs.kotlin_stdlib)
+    implementation(Libs.kotlinx_coroutines_core)
+    implementation(Libs.kotlinx_coroutines_android)
+    implementation(Libs.appcompat)
+    implementation(Libs.androidx_constraintlayout)
+    implementation(Libs.android_material)
+    implementation(Libs.io_card_android_sdk)
+    implementation(Libs.com_caverock_androidsvg)
+    implementation(Libs.com_github_devnied_emvnfccard)
+    implementation(Libs.android_play_services_wallet)
 
-    testImplementation("junit:junit:4.13")
-    testImplementation("io.kotest:kotest-runner-junit4-jvm:4.1.1")
-    testImplementation("io.kotest:kotest-assertions-core-jvm:4.1.1")
-    testImplementation("androidx.test.ext:junit:1.1.1")
-    testImplementation("androidx.test.espresso:espresso-core:3.2.0")
-    testImplementation("androidx.test:core:1.2.0")
-    testImplementation("io.mockk:mockk:1.10.0")
-    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.3.7")
+    testImplementation(TestLibs.junit)
+    testImplementation(TestLibs.io_kotest_runner_junit)
+    testImplementation(TestLibs.io_kotest_assertion_core)
+    testImplementation(TestLibs.androidx_test_ext_junit)
+    testImplementation(TestLibs.androidx_test_core)
+    testImplementation(TestLibs.io_mockk)
+    testImplementation(TestLibs.kotlinx_coroutines_test)
 
-    androidTestImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.3.7")
-    androidTestImplementation("com.squareup.okhttp3:mockwebserver:4.7.2")
-    androidTestImplementation("androidx.test.ext:junit:1.1.1")
-    androidTestImplementation("androidx.test:rules:1.2.0")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.2.0")
-    androidTestImplementation("io.mockk:mockk:1.10.0")
-    androidTestImplementation("io.mockk:mockk-android:1.10.0")
-    androidTestImplementation("com.squareup.spoon:spoon-client:2.0.0-SNAPSHOT")
+    androidTestImplementation(TestLibs.kotlinx_coroutines_test)
+    androidTestImplementation(TestLibs.androidx_test_ext_junit)
+    androidTestImplementation(TestLibs.androidx_test_rules)
+    androidTestImplementation(TestLibs.androidx_test_espresso_core)
+    androidTestImplementation(TestLibs.io_mockk_android)
+    androidTestImplementation(TestLibs.com_squareup_spoon)
+    androidTestImplementation(TestLibs.com_squareup_mockwebserver)
 }
 
 tasks {
-    withType<Test> {
-        dependsOn(detekt)
-    }
-
     withType<KotlinCompile> {
         kotlinOptions {
             freeCompilerArgs = listOf(

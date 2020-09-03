@@ -8,12 +8,15 @@ import ru.rbs.mobile.payment.sdk.component.CryptogramProcessor
 import ru.rbs.mobile.payment.sdk.component.impl.DefaultCryptogramProcessor
 import ru.rbs.mobile.payment.sdk.component.impl.DefaultPaymentStringProcessor
 import ru.rbs.mobile.payment.sdk.component.impl.RSACryptogramCipher
+import ru.rbs.mobile.payment.sdk.model.GooglePayPaymentConfig
 import ru.rbs.mobile.payment.sdk.model.PaymentConfig
 import ru.rbs.mobile.payment.sdk.model.PaymentData
 import ru.rbs.mobile.payment.sdk.model.SDKConfig
 import ru.rbs.mobile.payment.sdk.ui.CardListActivity
 import ru.rbs.mobile.payment.sdk.ui.CardNewActivity
+import ru.rbs.mobile.payment.sdk.ui.GooglePayActivity
 import ru.rbs.mobile.payment.sdk.ui.helper.LocalizationSetting
+import ru.rbs.mobile.payment.sdk.ui.helper.ThemeSetting
 
 /**
  * Основной класс для работы с функционалом библиотеки оплаты из мобильного приложения.
@@ -35,9 +38,6 @@ object SDKPayment {
                 cryptogramCipher = RSACryptogramCipher()
             )
         }
-        set(value) {
-            field = value
-        }
     internal val cryptogramProcessor: CryptogramProcessor
         get() {
             return innerCryptogramProcessor
@@ -47,15 +47,8 @@ object SDKPayment {
     /**
      * Инициализация.
      */
-    fun init(context: Context) {
-        innerSdkConfig = SDKConfigBuilder(context).build()
-    }
-
-    /**
-     * Инициализация.
-     */
-    fun init(sdkConfig: SDKConfig) {
-        innerSdkConfig = sdkConfig
+    fun init(context: Context, sdkConfig: SDKConfig? = null) {
+        innerSdkConfig = sdkConfig ?: SDKConfigBuilder(context).build()
     }
 
     /**
@@ -67,6 +60,7 @@ object SDKPayment {
     fun cryptogram(activity: Activity, config: PaymentConfig) {
         checkNotNull(cryptogramProcessor)
         LocalizationSetting.setLanguage(config.locale)
+        ThemeSetting.setTheme(config.theme)
         if (config.cards.isEmpty()) {
             activity.startActivityForResult(
                 CardNewActivity.prepareIntent(activity, config),
@@ -78,6 +72,16 @@ object SDKPayment {
                 REQUEST_CODE_CRYPTOGRAM
             )
         }
+    }
+
+    fun cryptogram(activity: Activity, config: GooglePayPaymentConfig) {
+        checkNotNull(cryptogramProcessor)
+        LocalizationSetting.setLanguage(config.locale)
+        ThemeSetting.setTheme(config.theme)
+        activity.startActivityForResult(
+            GooglePayActivity.prepareIntent(activity, config),
+            REQUEST_CODE_CRYPTOGRAM
+        )
     }
 
     /**
@@ -95,11 +99,12 @@ object SDKPayment {
     }
 
     private fun handlePaymentResult(data: Intent, callback: ResultCallback<PaymentData>) {
-        val paymentData = data.getSerializableExtra(Constants.INTENT_EXTRA_RESULT) as PaymentData?
+        val paymentData = data.getParcelableExtra(Constants.INTENT_EXTRA_RESULT) as PaymentData?
         if (paymentData != null) {
             callback.onSuccess(paymentData)
         } else {
-            callback.onFail(IllegalStateException("Payment data is empty"))
+            val exception = data.getSerializableExtra(Constants.INTENT_EXTRA_ERROR) as SDKException?
+            callback.onFail(exception ?: SDKException("Unknown error"))
         }
     }
 }

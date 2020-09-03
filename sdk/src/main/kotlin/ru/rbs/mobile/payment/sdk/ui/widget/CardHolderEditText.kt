@@ -49,7 +49,7 @@ class CardHolderEditText @JvmOverloads constructor(
                         if (source is Spanned) {
                             val sp = SpannableString(sb)
                             TextUtils.copySpansFrom(
-                                source as Spanned,
+                                source,
                                 start,
                                 sb.length,
                                 null,

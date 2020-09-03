@@ -4,5 +4,5 @@ object SleepEmulator{
 
     fun sleep() { Thread.sleep(SLEEP_TIME) }
 
-    private const val SLEEP_TIME = 3_000L
+    private const val SLEEP_TIME = 2_000L
 }

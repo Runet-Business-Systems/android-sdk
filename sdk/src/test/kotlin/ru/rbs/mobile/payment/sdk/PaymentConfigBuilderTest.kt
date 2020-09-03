@@ -10,10 +10,73 @@ import io.kotest.matchers.shouldNot
 import io.kotest.matchers.shouldNotBe
 import io.kotest.matchers.string.beEmpty
 import org.junit.Test
+import ru.rbs.mobile.payment.sdk.model.CameraScannerOptions
 import ru.rbs.mobile.payment.sdk.model.Card
 import ru.rbs.mobile.payment.sdk.model.CardSaveOptions
+import ru.rbs.mobile.payment.sdk.model.HolderInputOptions
+import ru.rbs.mobile.payment.sdk.model.NfcScannerOptions
+import ru.rbs.mobile.payment.sdk.model.Theme
+import ru.rbs.mobile.payment.sdk.ui.helper.Locales
+import ru.rbs.mobile.payment.sdk.ui.helper.Locales.english
+import ru.rbs.mobile.payment.sdk.ui.helper.Locales.german
 
 class PaymentConfigBuilderTest {
+
+    @Test
+    fun `should return theme`() {
+        PaymentConfigBuilder("18818587-aa98-4149-8780-3816afbd67f7")
+            .theme(Theme.DARK)
+            .build()
+            .theme shouldBe Theme.DARK
+
+        PaymentConfigBuilder("18818587-aa98-4149-8780-3816afbd67f7")
+            .theme(Theme.LIGHT)
+            .build()
+            .theme shouldBe Theme.LIGHT
+
+        PaymentConfigBuilder("18818587-aa98-4149-8780-3816afbd67f7")
+            .theme(Theme.DEFAULT)
+            .build()
+            .theme shouldBe Theme.DEFAULT
+
+        PaymentConfigBuilder("18818587-aa98-4149-8780-3816afbd67f7")
+            .theme(Theme.SYSTEM)
+            .build()
+            .theme shouldBe Theme.SYSTEM
+    }
+
+    @Test
+    fun `should return locale`() {
+        PaymentConfigBuilder("18818587-aa98-4149-8780-3816afbd67f7")
+            .locale(english())
+            .build()
+            .locale.language shouldBe "en"
+
+        PaymentConfigBuilder("18818587-aa98-4149-8780-3816afbd67f7")
+            .locale(german())
+            .build()
+            .locale.language shouldBe "de"
+
+        PaymentConfigBuilder("18818587-aa98-4149-8780-3816afbd67f7")
+            .locale(Locales.french())
+            .build()
+            .locale.language shouldBe "fr"
+
+        PaymentConfigBuilder("18818587-aa98-4149-8780-3816afbd67f7")
+            .locale(Locales.spanish())
+            .build()
+            .locale.language shouldBe "es"
+
+        PaymentConfigBuilder("18818587-aa98-4149-8780-3816afbd67f7")
+            .locale(Locales.russian())
+            .build()
+            .locale.language shouldBe "ru"
+
+        PaymentConfigBuilder("18818587-aa98-4149-8780-3816afbd67f7")
+            .locale(Locales.ukrainian())
+            .build()
+            .locale.language shouldBe "uk"
+    }
 
     @Test
     fun `should return order number`() {
@@ -120,12 +183,27 @@ class PaymentConfigBuilderTest {
         val expectedUuid = "62d0bb9e-111b-4c28-a79e-e7fb8d1791eb"
 
         val actualUuid = PaymentConfigBuilder("701e6250-fab1-403d-a6d0-10267c5faf6f")
-            .cardSaveOptions(CardSaveOptions.NO_BY_DEFAULT)
             .uuid(expectedUuid)
             .build()
             .uuid
 
         actualUuid shouldBe expectedUuid
+    }
+
+    @Test
+    fun `should return same generated value of uuid for the same builder`() {
+        val builder = PaymentConfigBuilder("3d73539f-2bc1-4dc6-8575-d36789af74e4")
+
+        val firstUUID = builder
+            .build()
+            .uuid
+        val secondUUID = builder
+            .build()
+            .uuid
+
+        firstUUID shouldNot beEmpty()
+        secondUUID shouldNot beEmpty()
+        firstUUID shouldBe secondUUID
     }
 
     @Test
@@ -182,18 +260,82 @@ class PaymentConfigBuilderTest {
     }
 
     @Test
-    fun `should return same generated value of uuid for the same builder`() {
-        val builder = PaymentConfigBuilder("3d73539f-2bc1-4dc6-8575-d36789af74e4")
-
-        val firstUUID = builder
+    fun `should return binding cvc required`() {
+        PaymentConfigBuilder("5eec2dec-b86a-48b3-b296-a772eb5ff77f")
+            .bindingCVCRequired(true)
             .build()
-            .uuid
-        val secondUUID = builder
-            .build()
-            .uuid
+            .bindingCVCRequired shouldBe true
 
-        firstUUID shouldNot beEmpty()
-        secondUUID shouldNot beEmpty()
-        firstUUID shouldBe secondUUID
+        PaymentConfigBuilder("5eec2dec-b86a-48b3-b296-a772eb5ff77f")
+            .bindingCVCRequired(false)
+            .build()
+            .bindingCVCRequired shouldBe false
+    }
+
+    @Test
+    fun `should return binding cvc required by default`() {
+        PaymentConfigBuilder("5eec2dec-b86a-48b3-b296-a772eb5ff77f")
+            .build()
+            .bindingCVCRequired shouldBe true
+    }
+
+    @Test
+    fun `should return nfcScannerOptions ENABLED by default`() {
+        PaymentConfigBuilder("5eec2dec-b86a-48b3-b296-a772eb5ff77f")
+            .build()
+            .nfcScannerOptions shouldBe NfcScannerOptions.ENABLED
+    }
+
+    @Test
+    fun `should return nfcScannerOptions`() {
+        PaymentConfigBuilder("5eec2dec-b86a-48b3-b296-a772eb5ff77f")
+            .nfcScannerOptions(NfcScannerOptions.ENABLED)
+            .build()
+            .nfcScannerOptions shouldBe NfcScannerOptions.ENABLED
+
+        PaymentConfigBuilder("5eec2dec-b86a-48b3-b296-a772eb5ff77f")
+            .nfcScannerOptions(NfcScannerOptions.DISABLED)
+            .build()
+            .nfcScannerOptions shouldBe NfcScannerOptions.DISABLED
+    }
+
+    @Test
+    fun `should return cameraScannerOptions ENABLED by default`() {
+        PaymentConfigBuilder("5eec2dec-b86a-48b3-b296-a772eb5ff77f")
+            .build()
+            .cameraScannerOptions shouldBe CameraScannerOptions.ENABLED
+    }
+
+    @Test
+    fun `should return cameraScannerOptions`() {
+        PaymentConfigBuilder("5eec2dec-b86a-48b3-b296-a772eb5ff77f")
+            .cameraScannerOptions(CameraScannerOptions.ENABLED)
+            .build()
+            .cameraScannerOptions shouldBe CameraScannerOptions.ENABLED
+
+        PaymentConfigBuilder("5eec2dec-b86a-48b3-b296-a772eb5ff77f")
+            .cameraScannerOptions(CameraScannerOptions.DISABLED)
+            .build()
+            .cameraScannerOptions shouldBe CameraScannerOptions.DISABLED
+    }
+
+    @Test
+    fun `should return holderInputOptions HIDE by default`() {
+        PaymentConfigBuilder("5eec2dec-b86a-48b3-b296-a772eb5ff77f")
+            .build()
+            .holderInputOptions shouldBe HolderInputOptions.HIDE
+    }
+
+    @Test
+    fun `should return holderInputOptions`() {
+        PaymentConfigBuilder("5eec2dec-b86a-48b3-b296-a772eb5ff77f")
+            .holderInputOptions(HolderInputOptions.VISIBLE)
+            .build()
+            .holderInputOptions shouldBe HolderInputOptions.VISIBLE
+
+        PaymentConfigBuilder("5eec2dec-b86a-48b3-b296-a772eb5ff77f")
+            .holderInputOptions(HolderInputOptions.HIDE)
+            .build()
+            .holderInputOptions shouldBe HolderInputOptions.HIDE
     }
 }

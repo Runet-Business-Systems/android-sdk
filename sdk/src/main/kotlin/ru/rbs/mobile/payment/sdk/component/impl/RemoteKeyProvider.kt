@@ -1,5 +1,7 @@
 package ru.rbs.mobile.payment.sdk.component.impl
 
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import org.json.JSONObject
 import ru.rbs.mobile.payment.sdk.component.KeyProvider
 import ru.rbs.mobile.payment.sdk.component.KeyProviderException
@@ -17,12 +19,14 @@ import java.net.URL
 class RemoteKeyProvider(private var url: String) : KeyProvider {
 
     @Suppress("TooGenericExceptionCaught")
-    override suspend fun provideKey(): Key = try {
-        val connection = URL(url).executeGet()
-        val keys = ActiveKeysDto.fromJson(connection.responseBodyToJsonObject()).keys
-        keys.first().toKey()
-    } catch (cause: Exception) {
-        throw KeyProviderException("Error while load active keys", cause)
+    override suspend fun provideKey(): Key = withContext(Dispatchers.IO) {
+        try {
+            val connection = URL(url).executeGet()
+            val keys = ActiveKeysDto.fromJson(connection.responseBodyToJsonObject()).keys
+            keys.first().toKey()
+        } catch (cause: Exception) {
+            throw KeyProviderException("Error while load active keys", cause)
+        }
     }
 
     private fun ActiveKeyDto.toKey() = Key(

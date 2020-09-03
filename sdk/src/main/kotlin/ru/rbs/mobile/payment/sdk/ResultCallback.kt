@@ -14,5 +14,5 @@ interface ResultCallback<ResultType> {
      * Вызывается при возникновении ошибки во время выполнения операции. [e] содержит описание
      * ошибки.
      */
-    fun onFail(e: Exception)
+    fun onFail(e: SDKException)
 }

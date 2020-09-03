@@ -5,17 +5,17 @@
     android:viewportHeight="22">
   <path
       android:pathData="M21,3H5C3.89,3 3.01,3.89 3.01,5L3,17C3,18.11 3.89,19 5,19H21C22.11,19 23,18.11 23,17V5C23,3.89 22.11,3 21,3ZM21,17H5V11H21V17ZM21,7H5V5H21V7Z"
-      android:fillColor="#636363"/>
+      android:fillColor="@color/rbs_color_hint_text"/>
   <path
       android:pathData="M2,2H5V0H2C1,0 0,1 0,2V5H2V2Z"
-      android:fillColor="#636363"/>
+      android:fillColor="@color/rbs_color_hint_text"/>
   <path
       android:pathData="M2,20L2,17L-0,17L-0,20C-0,21 1,22 2,22L5,22L5,20L2,20Z"
-      android:fillColor="#636363"/>
+      android:fillColor="@color/rbs_color_hint_text"/>
   <path
       android:pathData="M24,2L24,5L26,5L26,2C26,1 25,-0 24,-0L21,-0L21,2L24,2Z"
-      android:fillColor="#636363"/>
+      android:fillColor="@color/rbs_color_hint_text"/>
   <path
       android:pathData="M24,20L21,20L21,22L24,22C25,22 26,21 26,20L26,17L24,17L24,20Z"
-      android:fillColor="#636363"/>
+      android:fillColor="@color/rbs_color_hint_text"/>
 </vector>

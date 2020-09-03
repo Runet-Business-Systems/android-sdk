@@ -1,6 +1,6 @@
 package ru.rbs.mobile.payment.sdk.component.impl
 
-import kotlinx.coroutines.test.runBlockingTest
+import kotlinx.coroutines.runBlocking
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
 import org.junit.After
@@ -15,6 +15,7 @@ class RemoteCardInfoProviderTest {
     private lateinit var cardInfoProvider: CardInfoProvider
     private val server: MockWebServer = MockWebServer()
     private lateinit var urlBin: String
+
     @Before
     fun setUp() {
         server.start()
@@ -32,7 +33,7 @@ class RemoteCardInfoProviderTest {
     }
 
     @Test
-    fun shouldReturnCardInfo() = runBlockingTest {
+    fun shouldReturnCardInfo() = runBlocking {
         server.enqueue(
             MockResponse().setBody(
                 """
@@ -68,13 +69,17 @@ class RemoteCardInfoProviderTest {
         assertEquals(true, info.backgroundLightness)
         assertEquals("#000", info.textColor)
         assertEquals("${urlBin}logo/main/364b8b2f-64f1-4268-b1df-9b19575c68e1/1.svg", info.logo)
-        assertEquals("${urlBin}logo/invert/364b8b2f-64f1-4268-b1df-9b19575c68e1/1.svg", info.logoInvert)
+        assertEquals(
+            "${urlBin}logo/invert/364b8b2f-64f1-4268-b1df-9b19575c68e1/1.svg",
+            info.logoInvert
+        )
         assertEquals("visa", info.paymentSystem)
         assertEquals("SUCCESS", info.status)
+        Unit
     }
 
     @Test(expected = CardInfoProviderException::class)
-    fun shouldReturnCardInfoProviderExceptionForIncorrectResponseBody() = runBlockingTest {
+    fun shouldReturnCardInfoProviderExceptionForIncorrectResponseBody() = runBlocking {
         server.enqueue(
             MockResponse().setBody(
                 "Incorrect body response"
@@ -82,14 +87,16 @@ class RemoteCardInfoProviderTest {
         )
 
         cardInfoProvider.resolve("12345")
+        Unit
     }
 
     @Test(expected = CardInfoProviderException::class)
-    fun shouldReturnCardInfoProviderExceptionForErrorCodeResponse() = runBlockingTest {
+    fun shouldReturnCardInfoProviderExceptionForErrorCodeResponse() = runBlocking {
         server.enqueue(
             MockResponse().setHttp2ErrorCode(500)
         )
 
         cardInfoProvider.resolve("12345")
+        Unit
     }
 }

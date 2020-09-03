@@ -1,26 +1,30 @@
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
-    android:width="18dp"
+    android:width="19dp"
     android:height="26dp"
-    android:viewportWidth="18"
+    android:viewportWidth="19"
     android:viewportHeight="26">
-  <path
-      android:pathData="M1.4783,8.0434C2.3044,8.663 3.9565,10.5217 3.9565,12.9999C3.9565,15.4782 2.3044,17.3369 1.4783,17.9564"
-      android:strokeWidth="2"
-      android:fillColor="#00000000"
-      android:strokeColor="#636363"/>
-  <path
-      android:pathData="M3.9565,4.7391C5.3334,5.7717 8.087,8.8695 8.087,12.9999C8.087,17.1304 5.3334,20.2282 3.9565,21.2608"
-      android:strokeWidth="2"
-      android:fillColor="#00000000"
-      android:strokeColor="#636363"/>
-  <path
-      android:pathData="M6.4348,1.4347C8.3624,2.8803 12.2174,7.2173 12.2174,12.9999C12.2174,18.7825 8.3624,23.1195 6.4348,24.5651"
-      android:strokeWidth="2"
-      android:fillColor="#00000000"
-      android:strokeColor="#636363"/>
-  <path
-      android:pathData="M8.9131,-1.8696C11.3913,-0.0109 16.3479,5.5651 16.3479,12.9999C16.3479,20.4347 11.3913,26.0108 8.9131,27.8695"
-      android:strokeWidth="2"
-      android:fillColor="#00000000"
-      android:strokeColor="#636363"/>
+  <group>
+    <clip-path
+        android:pathData="M14.1468,0.3167C17.3163,3.8518 19.0473,8.4455 18.999,13.1932C18.9507,17.9409 17.1266,22.4985 13.8859,25.9685L0,13L14.1468,0.3167Z"/>
+    <path
+        android:pathData="M2.4783,8.0434C3.3044,8.663 4.9565,10.5217 4.9565,12.9999C4.9565,15.4782 3.3044,17.3369 2.4783,17.9564"
+        android:strokeWidth="2"
+        android:fillColor="#00000000"
+        android:strokeColor="@color/rbs_color_hint_text"/>
+    <path
+        android:pathData="M4.9565,4.7391C6.3334,5.7717 9.087,8.8695 9.087,12.9999C9.087,17.1304 6.3334,20.2282 4.9565,21.2608"
+        android:strokeWidth="2"
+        android:fillColor="#00000000"
+        android:strokeColor="@color/rbs_color_hint_text"/>
+    <path
+        android:pathData="M7.4348,1.4347C9.3624,2.8803 13.2174,7.2173 13.2174,12.9999C13.2174,18.7825 9.3624,23.1195 7.4348,24.5651"
+        android:strokeWidth="2"
+        android:fillColor="#00000000"
+        android:strokeColor="@color/rbs_color_hint_text"/>
+    <path
+        android:pathData="M9.9131,-1.8696C12.3913,-0.0109 17.3479,5.5651 17.3479,12.9999C17.3479,20.4347 12.3913,26.0108 9.9131,27.8695"
+        android:strokeWidth="2"
+        android:fillColor="#00000000"
+        android:strokeColor="@color/rbs_color_hint_text"/>
+  </group>
 </vector>

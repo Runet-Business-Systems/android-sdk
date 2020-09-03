@@ -33,12 +33,14 @@ dependencies {
     implementation("androidx.appcompat:appcompat:1.1.0")
     implementation("androidx.constraintlayout:constraintlayout:1.1.3")
     implementation("androidx.cardview:cardview:1.0.0")
+    implementation("com.github.devnied.emvnfccard:library:3.0.1")
 
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.7")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.7")
     implementation("com.caverock:androidsvg-aar:1.4")
     implementation("com.google.android.material:material:1.2.0-beta01")
     implementation("io.card:android-sdk:5.5.1")
+    implementation("com.google.android.gms:play-services-wallet:18.0.0")
 }
 
 tasks {

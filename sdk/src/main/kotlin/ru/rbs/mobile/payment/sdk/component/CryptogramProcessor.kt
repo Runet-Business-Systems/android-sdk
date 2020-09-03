@@ -14,7 +14,6 @@ interface CryptogramProcessor {
      * @param timestamp время платежа.
      * @param uuid уникальный идентификатор.
      * @param cardInfo данные карты, для списания средств.
-     *
      * @return криптограмму для переданных данных о платеже.
      */
     suspend fun create(
@@ -22,5 +21,15 @@ interface CryptogramProcessor {
         timestamp: Long,
         uuid: String,
         cardInfo: CardInfo
+    ): String
+
+    /**
+     * Создает готовую к проведению платежа криптограмму.
+     *
+     * @param googlePayToken токен полученный от Google Pay.
+     * @return криптограмму для переданных данных о платеже.
+     */
+    suspend fun create(
+        googlePayToken: String
     ): String
 }

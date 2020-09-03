@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="GooglePayButton">
+        <attr name="rbs_google_pay_button_image_format" format="enum">
+            <enum name="with_text" value="0" />
+            <enum name="without_text" value="1" />
+        </attr>
+        <attr name="rbs_google_pay_button_background_format" format="enum">
+            <enum name="shadow" value="0" />
+            <enum name="outlet" value="1" />
+        </attr>
+    </declare-styleable>
+</resources>

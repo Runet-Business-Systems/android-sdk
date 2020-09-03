@@ -9,6 +9,7 @@ import org.junit.Test
 import ru.rbs.mobile.payment.sdk.R
 import ru.rbs.mobile.payment.sdk.test.SleepEmulator.sleep
 import ru.rbs.mobile.payment.sdk.test.core.CoreUIViewTest
+import ru.rbs.mobile.payment.sdk.test.junit.ConfigurationSingle
 
 class BankCardViewTest : CoreUIViewTest<BankCardView>() {
 
@@ -19,6 +20,7 @@ class BankCardViewTest : CoreUIViewTest<BankCardView>() {
     }
 
     @Test
+    @ConfigurationSingle
     fun shouldDisplayNumberMask() {
         takeScreen()
 
@@ -49,34 +51,35 @@ class BankCardViewTest : CoreUIViewTest<BankCardView>() {
 
 
     @Test
+    @ConfigurationSingle
     fun shouldDisplayExpireMask() {
         takeScreen()
         onView(withId(R.id.cardExpiry))
-            .check(matches(withText("•• / ••")))
+            .check(matches(withText("••/••")))
 
         activityTestRule.runOnUiThread {
             testedView.setExpiry("12")
         }
         takeScreen()
-        onView(withId(R.id.cardExpiry)).check(matches(withText("12 / ••")))
+        onView(withId(R.id.cardExpiry)).check(matches(withText("12/••")))
 
         activityTestRule.runOnUiThread {
             testedView.setExpiry("12/25")
         }
         takeScreen()
-        onView(withId(R.id.cardExpiry)).check(matches(withText("12 / 25")))
+        onView(withId(R.id.cardExpiry)).check(matches(withText("12/25")))
 
         activityTestRule.runOnUiThread {
             testedView.setExpiry("55555")
         }
         takeScreen()
-        onView(withId(R.id.cardExpiry)).check(matches(withText("55 / 55")))
+        onView(withId(R.id.cardExpiry)).check(matches(withText("55/55")))
 
         activityTestRule.runOnUiThread {
             testedView.setExpiry("123456789")
         }
         takeScreen()
         sleep()
-        onView(withId(R.id.cardExpiry)).check(matches(withText("12 / 34")))
+        onView(withId(R.id.cardExpiry)).check(matches(withText("12/34")))
     }
 }

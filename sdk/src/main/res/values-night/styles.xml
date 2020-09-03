@@ -1,0 +1,18 @@
+<resources>
+
+    <style name="RBSDefaultTheme" parent="Theme.AppCompat.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/rbs_color_primary</item>
+        <item name="colorPrimaryDark">@color/rbs_color_primaryDark</item>
+        <item name="colorAccent">@color/rbs_color_accent</item>
+        <item name="android:alertDialogTheme">@style/RBSAlertDialogTheme</item>
+        <item name="android:windowBackground">@color/rbs_color_main_background</item>
+        <item name="android:statusBarColor">@color/rbs_color_main_background</item>
+        <item name="android:buttonStyle">@style/RBSBrandButtonStyle</item>
+        <item name="android:editTextStyle">@style/RBSEditTextStyle</item>
+        <item name="android:textViewStyle">@style/RBSTextViewStyle</item>
+        <item name="android:listDivider">@drawable/list_divider_default</item>
+        <item name="android:textColorHint">@color/rbs_color_hint_text</item>
+        <item name="android:checkboxStyle">@style/RBSCheckBoxStyle</item>
+    </style>
+
+</resources>

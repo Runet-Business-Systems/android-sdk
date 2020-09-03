@@ -8,7 +8,7 @@
         android:requestLegacyExternalStorage="true"
         android:theme="@style/RBSDefaultTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".test.core.CoreMockActivity" />
+        <activity android:name=".test.core.CoreTestActivity" />
     </application>
 
 </manifest>

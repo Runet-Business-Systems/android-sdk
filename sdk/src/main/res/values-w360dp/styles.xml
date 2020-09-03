@@ -1,10 +1,18 @@
 <resources>
     <style name="RBSEditTextStyle" parent="Widget.AppCompat.EditText">
         <item name="android:textAppearance">@style/TextAppearance.AppCompat.Medium</item>
+        <item name="android:textColor">@color/rbs_color_text</item>
+        <item name="errorTextColor">@color/rbs_color_error_text</item>
     </style>
     <style name="RBSTextViewStyle" parent="Widget.AppCompat.TextView">
         <item name="android:textAppearance">@style/TextAppearance.AppCompat.Medium</item>
+        <item name="android:textColor">@color/rbs_color_text</item>
+    </style>
+    <style name="RBSCheckBoxStyle" parent="Widget.AppCompat.CompoundButton.CheckBox">
+        <item name="android:textAppearance">@style/TextAppearance.AppCompat.Medium</item>
+        <item name="android:textColor">@color/rbs_color_text</item>
     </style>
     <style name="RBSCardNumberTextAppearance" parent="TextAppearance.AppCompat.Large">
+        <item name="fontFamily">monospace</item>
     </style>
 </resources>

@@ -13,13 +13,14 @@ import org.junit.Test
 import ru.rbs.mobile.payment.sdk.R
 import ru.rbs.mobile.payment.sdk.test.core.CoreUIViewTest
 import ru.rbs.mobile.payment.sdk.test.espresso.ExactViewMatcher.Companion.exactView
+import ru.rbs.mobile.payment.sdk.test.junit.ConfigurationSingle
 
 class CardHolderEditTextTest : CoreUIViewTest<CardHolderEditText>() {
 
     override fun prepareView(context: Context): CardHolderEditText {
         return CardHolderEditText(context).apply {
             showError = true
-            hint = getTargetString(R.string.rbs_card_holder_placeholder)
+            hint = getString(R.string.rbs_card_holder_placeholder)
         }
     }
 
@@ -30,6 +31,7 @@ class CardHolderEditTextTest : CoreUIViewTest<CardHolderEditText>() {
     }
 
     @Test
+    @ConfigurationSingle
     fun shouldNotAllowTypeDigitsAtTheStart() {
         onView(exactView(testedView)).perform(typeText("123abcDe"))
         takeScreen()
@@ -38,6 +40,7 @@ class CardHolderEditTextTest : CoreUIViewTest<CardHolderEditText>() {
     }
 
     @Test
+    @ConfigurationSingle
     fun shouldNotAllowTypeDigitsAtTheMiddle() {
         onView(exactView(testedView)).perform(typeText("Ho23me"))
         takeScreen()
@@ -46,6 +49,7 @@ class CardHolderEditTextTest : CoreUIViewTest<CardHolderEditText>() {
     }
 
     @Test
+    @ConfigurationSingle
     fun shouldNotAllowTypeDigitsAtTheEnd() {
         onView(exactView(testedView)).perform(typeText("Home23"))
         takeScreen()
@@ -54,6 +58,7 @@ class CardHolderEditTextTest : CoreUIViewTest<CardHolderEditText>() {
     }
 
     @Test
+    @ConfigurationSingle
     fun shouldNotAllowTypeCyrillicAtTheEnd() {
         onView(exactView(testedView)).perform(typeText("JUMP"))
         takeScreen()
@@ -64,6 +69,7 @@ class CardHolderEditTextTest : CoreUIViewTest<CardHolderEditText>() {
     }
 
     @Test
+    @ConfigurationSingle
     fun shouldAllowTypeLatinWithSpace() {
         onView(exactView(testedView)).perform(typeText("John Doe"))
         takeScreen()
@@ -72,6 +78,7 @@ class CardHolderEditTextTest : CoreUIViewTest<CardHolderEditText>() {
     }
 
     @Test
+    @ConfigurationSingle
     fun shouldWorkBackspace() {
         onView(exactView(testedView)).perform(typeText("John Doe"))
         takeScreen()

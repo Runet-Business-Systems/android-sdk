@@ -1,5 +1,7 @@
 package ru.rbs.mobile.payment.sdk.component.impl
 
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import org.json.JSONObject
 import ru.rbs.mobile.payment.sdk.component.CardInfo
 import ru.rbs.mobile.payment.sdk.component.CardInfoProvider
@@ -20,15 +22,17 @@ class RemoteCardInfoProvider(
 ) : CardInfoProvider {
 
     @Suppress("TooGenericExceptionCaught")
-    override suspend fun resolve(bin: String): CardInfo = try {
-        val body = JSONObject(mapOf("bin" to bin)).toString()
-        val connection = URL(url).executePostJson(body)
-        val info = CardInfo.fromJson(connection.responseBodyToJsonObject())
-        info.copy(
-            logo = urlBin + info.logo,
-            logoInvert = urlBin + info.logoInvert
-        )
-    } catch (cause: Exception) {
-        throw CardInfoProviderException("Error while load card info", cause)
+    override suspend fun resolve(bin: String): CardInfo = withContext(Dispatchers.IO) {
+        try {
+            val body = JSONObject(mapOf("bin" to bin)).toString()
+            val connection = URL(url).executePostJson(body)
+            val info = CardInfo.fromJson(connection.responseBodyToJsonObject())
+            info.copy(
+                logo = urlBin + info.logo,
+                logoInvert = urlBin + info.logoInvert
+            )
+        } catch (cause: Exception) {
+            throw CardInfoProviderException("Error while load card info", cause)
+        }
     }
 }

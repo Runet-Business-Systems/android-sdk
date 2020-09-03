@@ -1,6 +1,6 @@
 package ru.rbs.mobile.payment.sdk.component.impl
 
-import kotlinx.coroutines.test.runBlockingTest
+import kotlinx.coroutines.runBlocking
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
 import org.junit.After
@@ -28,7 +28,7 @@ class RemoteKeyProviderTest {
     }
 
     @Test
-    fun shouldReturnFirstActiveKey() = runBlockingTest {
+    fun shouldReturnFirstActiveKey() = runBlocking {
         server.enqueue(
             MockResponse().setBody(
                 """
@@ -58,11 +58,12 @@ class RemoteKeyProviderTest {
         )
         assertEquals("RSA", key.protocol)
         assertEquals(1598527672000L, key.expiration)
+        Unit
     }
 
 
     @Test(expected = KeyProviderException::class)
-    fun shouldReturnKeyProviderExceptionForIncorrectResponseBody() = runBlockingTest {
+    fun shouldReturnKeyProviderExceptionForIncorrectResponseBody() = runBlocking {
         server.enqueue(
             MockResponse().setBody(
                 "Incorrect body response"
@@ -70,14 +71,16 @@ class RemoteKeyProviderTest {
         )
 
         keyProvider.provideKey()
+        Unit
     }
 
     @Test(expected = KeyProviderException::class)
-    fun shouldReturnKeyProviderExceptionForErrorCodeResponse() = runBlockingTest {
+    fun shouldReturnKeyProviderExceptionForErrorCodeResponse() = runBlocking {
         server.enqueue(
             MockResponse().setHttp2ErrorCode(500)
         )
 
         keyProvider.provideKey()
+        Unit
     }
 }

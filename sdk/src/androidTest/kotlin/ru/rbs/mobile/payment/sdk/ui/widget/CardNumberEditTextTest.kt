@@ -18,6 +18,7 @@ import org.junit.Test
 import ru.rbs.mobile.payment.sdk.R
 import ru.rbs.mobile.payment.sdk.test.core.CoreUIViewTest
 import ru.rbs.mobile.payment.sdk.test.espresso.ExactViewMatcher.Companion.exactView
+import ru.rbs.mobile.payment.sdk.test.junit.ConfigurationSingle
 import ru.rbs.mobile.payment.sdk.utils.onDisplayError
 
 
@@ -26,7 +27,7 @@ class CardNumberEditTextTest : CoreUIViewTest<CardNumberEditText>() {
     override fun prepareView(context: Context): CardNumberEditText {
         return CardNumberEditText(context).apply {
             showError = true
-            hint = getTargetString(R.string.rbs_card_number)
+            hint = getString(R.string.rbs_card_number)
         }
     }
 
@@ -38,6 +39,7 @@ class CardNumberEditTextTest : CoreUIViewTest<CardNumberEditText>() {
     }
 
     @Test
+    @ConfigurationSingle
     fun shouldNotAllowTypeLatin() {
         onView(exactView(testedView)).perform(typeText("abcDess"))
 
@@ -45,6 +47,7 @@ class CardNumberEditTextTest : CoreUIViewTest<CardNumberEditText>() {
     }
 
     @Test
+    @ConfigurationSingle
     fun shouldNotAllowTypeCyrillic() {
         onView(exactView(testedView)).perform(replaceText("Ворота"))
         onView(exactView(testedView)).perform(typeText("1234"))
@@ -53,6 +56,7 @@ class CardNumberEditTextTest : CoreUIViewTest<CardNumberEditText>() {
     }
 
     @Test
+    @ConfigurationSingle
     fun shouldDisplayCorrectFormat() {
         onView(exactView(testedView)).perform(typeText("1234"))
         takeScreen()
@@ -80,6 +84,7 @@ class CardNumberEditTextTest : CoreUIViewTest<CardNumberEditText>() {
     }
 
     @Test
+    @ConfigurationSingle
     fun shouldAcceptMinNumberLength() {
         onView(exactView(testedView)).perform(typeText("5391119268214792"))
         takeScreen()
@@ -88,6 +93,7 @@ class CardNumberEditTextTest : CoreUIViewTest<CardNumberEditText>() {
     }
 
     @Test
+    @ConfigurationSingle
     fun shouldAcceptMaxNumberLength() {
         onView(exactView(testedView)).perform(typeText("3536360489308537405"))
         takeScreen()
@@ -96,6 +102,7 @@ class CardNumberEditTextTest : CoreUIViewTest<CardNumberEditText>() {
     }
 
     @Test
+    @ConfigurationSingle
     fun shouldNotAllowTypeMoreThenMaxLength() {
         onView(exactView(testedView)).perform(typeText("35363604893085374051"))
         takeScreen()
@@ -104,6 +111,7 @@ class CardNumberEditTextTest : CoreUIViewTest<CardNumberEditText>() {
     }
 
     @Test
+    @ConfigurationSingle
     fun shouldWorkBackspace() {
         onView(exactView(testedView)).perform(typeText("3536360489308537405"))
         takeScreen()
@@ -130,6 +138,7 @@ class CardNumberEditTextTest : CoreUIViewTest<CardNumberEditText>() {
     }
 
     @Test
+    @ConfigurationSingle
     fun shouldWorkEdit() {
         onView(exactView(testedView)).perform(typeText("35363604"))
         takeScreen()
@@ -147,6 +156,7 @@ class CardNumberEditTextTest : CoreUIViewTest<CardNumberEditText>() {
     }
 
     @Test
+    @ConfigurationSingle
     fun shouldWorkInsert() {
         onView(exactView(testedView)).perform(typeText("35363604"))
         takeScreen()
@@ -172,6 +182,7 @@ class CardNumberEditTextTest : CoreUIViewTest<CardNumberEditText>() {
     }
 
     @Test
+    @ConfigurationSingle
     fun shouldCheckNumberByLunaAlgorithm() {
         onView(exactView(testedView)).perform(typeText("4485873525931601"))
         takeScreen()

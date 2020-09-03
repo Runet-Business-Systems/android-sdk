@@ -21,7 +21,7 @@ class CardListActivity : BaseActivity() {
 
     private val cardsAdapter = CardListAdapter()
     private val config: PaymentConfig by lazy {
-        intent.getSerializableExtra(Constants.INTENT_EXTRA_CONFIG) as PaymentConfig
+        intent.getParcelableExtra<PaymentConfig>(Constants.INTENT_EXTRA_CONFIG) as PaymentConfig
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

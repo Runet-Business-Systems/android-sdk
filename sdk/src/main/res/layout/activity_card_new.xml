@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/rootLayout"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:scrollbars="none"
+    android:id="@+id/rootLayout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:scrollbars="none">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -33,6 +33,7 @@
 
         <ru.rbs.mobile.payment.sdk.ui.widget.BaseTextInputLayout
             android:id="@+id/cardNumberInputLayout"
+            style="@style/RBSTextInputLayoutAppearance"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_marginStart="@dimen/rbs_form_padding"
@@ -57,6 +58,7 @@
 
         <ru.rbs.mobile.payment.sdk.ui.widget.BaseTextInputLayout
             android:id="@+id/cardExpiryInputLayout"
+            style="@style/RBSTextInputLayoutAppearance"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/rbs_form_padding"
@@ -80,6 +82,7 @@
 
         <ru.rbs.mobile.payment.sdk.ui.widget.BaseTextInputLayout
             android:id="@+id/cardCodeInputLayout"
+            style="@style/RBSTextInputLayoutAppearance"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/rbs_form_padding"
@@ -112,6 +115,7 @@
 
         <ru.rbs.mobile.payment.sdk.ui.widget.BaseTextInputLayout
             android:id="@+id/cardHolderInputLayout"
+            style="@style/RBSTextInputLayoutAppearance"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/rbs_form_padding"
@@ -155,9 +159,9 @@
             android:layout_width="0dp"
             android:layout_height="24dp"
             android:layout_marginStart="@dimen/rbs_form_padding"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="@dimen/rbs_form_tds_padding"
             android:layout_marginEnd="@dimen/rbs_form_padding"
-            android:layout_marginBottom="8dp"
+            android:layout_marginBottom="@dimen/rbs_form_tds_padding"
             android:gravity="center_vertical"
             app:layout_constraintBottom_toTopOf="@+id/doneButton"
             app:layout_constraintEnd_toEndOf="parent"
@@ -174,6 +178,7 @@
                 app:layout_constraintHorizontal_chainStyle="spread_inside"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
+                android:contentDescription="@string/verify_system_image_content_description"
                 app:srcCompat="@drawable/ic_verify_visa_tds" />
 
             <ImageView
@@ -185,6 +190,7 @@
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toEndOf="@+id/imageView"
                 app:layout_constraintTop_toTopOf="@+id/imageView3"
+                android:contentDescription="@string/verify_system_image_content_description"
                 app:srcCompat="@drawable/ic_verify_mastercard_tds" />
 
             <ImageView
@@ -196,7 +202,8 @@
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toEndOf="@+id/imageView2"
                 app:layout_constraintTop_toTopOf="@+id/imageView4"
-                app:srcCompat="@drawable/ic_verify_mir_td" />
+                android:contentDescription="@string/verify_system_image_content_description"
+                app:srcCompat="@drawable/ic_verify_mir_tds" />
 
             <ImageView
                 android:id="@+id/imageView4"
@@ -207,6 +214,7 @@
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toEndOf="@+id/imageView3"
                 app:layout_constraintTop_toTopOf="parent"
+                android:contentDescription="@string/verify_system_image_content_description"
                 app:srcCompat="@drawable/ic_verify_jcb_tds" />
 
             <ImageView
@@ -220,6 +228,7 @@
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toEndOf="@+id/imageView4"
                 app:layout_constraintTop_toTopOf="parent"
+                android:contentDescription="@string/verify_system_image_content_description"
                 app:srcCompat="@drawable/ic_verify_pci_tds" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -12,6 +12,7 @@ import org.junit.Test
 import ru.rbs.mobile.payment.sdk.R
 import ru.rbs.mobile.payment.sdk.test.core.CoreUIViewTest
 import ru.rbs.mobile.payment.sdk.test.espresso.ExactViewMatcher.Companion.exactView
+import ru.rbs.mobile.payment.sdk.test.junit.ConfigurationSingle
 import ru.rbs.mobile.payment.sdk.utils.onDisplayError
 
 class CardExpiryEditTextTest : CoreUIViewTest<CardExpiryEditText>() {
@@ -19,7 +20,7 @@ class CardExpiryEditTextTest : CoreUIViewTest<CardExpiryEditText>() {
     override fun prepareView(context: Context): CardExpiryEditText {
         return CardExpiryEditText(context).apply {
             showError = true
-            hint = getTargetString(R.string.rbs_card_expiry_placeholder)
+            hint = getString(R.string.rbs_card_expiry_placeholder)
         }
     }
 
@@ -31,6 +32,7 @@ class CardExpiryEditTextTest : CoreUIViewTest<CardExpiryEditText>() {
     }
 
     @Test
+    @ConfigurationSingle
     fun shouldAllowInputOnlyCorrectMonthNumber() {
         onView(exactView(testedView)).perform(typeText("1220"))
         takeScreen()
@@ -39,6 +41,7 @@ class CardExpiryEditTextTest : CoreUIViewTest<CardExpiryEditText>() {
     }
 
     @Test
+    @ConfigurationSingle
     fun shouldNotAllowInputMoreThenMaxLength() {
         onView(exactView(testedView)).perform(typeText("12203"))
         takeScreen()
@@ -47,6 +50,7 @@ class CardExpiryEditTextTest : CoreUIViewTest<CardExpiryEditText>() {
     }
 
     @Test
+    @ConfigurationSingle
     fun shouldAllowInputOnlyCorrectYearNumber() {
         onView(exactView(testedView)).perform(typeText("9920"))
         takeScreen()
@@ -55,6 +59,7 @@ class CardExpiryEditTextTest : CoreUIViewTest<CardExpiryEditText>() {
     }
 
     @Test
+    @ConfigurationSingle
     fun shouldAllowInputOnlyDigits() {
         onView(exactView(testedView)).perform(typeText("a1b1 2N0"))
         takeScreen()
@@ -63,12 +68,14 @@ class CardExpiryEditTextTest : CoreUIViewTest<CardExpiryEditText>() {
     }
 
     @Test
+    @ConfigurationSingle
     fun shouldShowErrorForMaxYearLimit() {
         onView(exactView(testedView)).perform(typeText("0159"))
         takeScreen()
     }
 
     @Test
+    @ConfigurationSingle
     fun shouldAppendDivider() {
         onView(exactView(testedView)).perform(typeText("0122"))
         takeScreen()
@@ -91,6 +98,7 @@ class CardExpiryEditTextTest : CoreUIViewTest<CardExpiryEditText>() {
     }
 
     @Test
+    @ConfigurationSingle
     fun shouldWorkBackspace() {
         onView(exactView(testedView)).perform(typeText("0122"))
         takeScreen()

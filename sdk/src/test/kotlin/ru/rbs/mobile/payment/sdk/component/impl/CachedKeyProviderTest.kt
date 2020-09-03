@@ -110,7 +110,7 @@ class CachedKeyProviderTest {
             every { sharedPreferences.contains("public_key_value") } returns false
             every { sharedPreferences.contains("public_key_protocol") } returns false
             every { sharedPreferences.contains("public_key_expiration") } returns false
-            val editor = mockk<SharedPreferences.Editor>() {
+            val editor = mockk<SharedPreferences.Editor> {
                 every { this@mockk.remove(any()) } returns this
                 every { this@mockk.putString(any(), any()) } returns this
                 every { this@mockk.putLong(any(), any()) } returns this
@@ -145,7 +145,7 @@ class CachedKeyProviderTest {
             every { sharedPreferences.contains("public_key_value") } returns false
             every { sharedPreferences.contains("public_key_protocol") } returns false
             every { sharedPreferences.contains("public_key_expiration") } returns false
-            val editor = mockk<SharedPreferences.Editor>() {
+            val editor = mockk<SharedPreferences.Editor> {
                 every { this@mockk.remove(any()) } returns this
                 every { this@mockk.putString(any(), any()) } returns this
                 every { this@mockk.putLong(any(), any()) } returns this

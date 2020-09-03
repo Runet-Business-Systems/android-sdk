@@ -3,11 +3,14 @@ package ru.rbs.mobile.payment.sdk.ui
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.nfc.NfcAdapter
 import android.os.Bundle
 import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.inputmethod.InputMethodManager
+import android.widget.Toast
+import com.github.devnied.emvnfccard.exception.CommunicationException
 import io.card.payment.CardIOActivity
 import io.card.payment.CardIOActivity.EXTRA_HIDE_CARDIO_LOGO
 import io.card.payment.CardIOActivity.EXTRA_LANGUAGE_OR_LOCALE
@@ -18,7 +21,18 @@ import io.card.payment.CardIOActivity.EXTRA_REQUIRE_POSTAL_CODE
 import io.card.payment.CardIOActivity.EXTRA_SUPPRESS_CONFIRMATION
 import io.card.payment.CardIOActivity.EXTRA_USE_PAYPAL_ACTIONBAR_ICON
 import io.card.payment.CreditCard
-import kotlinx.android.synthetic.main.activity_card_new.*
+import kotlinx.android.synthetic.main.activity_card_new.bankCardView
+import kotlinx.android.synthetic.main.activity_card_new.cardCodeInput
+import kotlinx.android.synthetic.main.activity_card_new.cardCodeInputLayout
+import kotlinx.android.synthetic.main.activity_card_new.cardExpiryInput
+import kotlinx.android.synthetic.main.activity_card_new.cardExpiryInputLayout
+import kotlinx.android.synthetic.main.activity_card_new.cardHolderInput
+import kotlinx.android.synthetic.main.activity_card_new.cardHolderInputLayout
+import kotlinx.android.synthetic.main.activity_card_new.cardNumberInput
+import kotlinx.android.synthetic.main.activity_card_new.cardNumberInputLayout
+import kotlinx.android.synthetic.main.activity_card_new.checkSaveCard
+import kotlinx.android.synthetic.main.activity_card_new.doneButton
+import kotlinx.android.synthetic.main.activity_card_new.toolbar
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import ru.rbs.mobile.payment.sdk.Constants.INTENT_EXTRA_CONFIG
@@ -31,26 +45,32 @@ import ru.rbs.mobile.payment.sdk.model.CardInfo
 import ru.rbs.mobile.payment.sdk.model.CardPanIdentifier
 import ru.rbs.mobile.payment.sdk.model.CardSaveOptions
 import ru.rbs.mobile.payment.sdk.model.HolderInputOptions
+import ru.rbs.mobile.payment.sdk.model.NfcScannerOptions
 import ru.rbs.mobile.payment.sdk.model.PaymentConfig
 import ru.rbs.mobile.payment.sdk.model.PaymentData
 import ru.rbs.mobile.payment.sdk.model.PaymentDataStatus
 import ru.rbs.mobile.payment.sdk.model.PaymentInfoNewCard
+import ru.rbs.mobile.payment.sdk.nfc.NFCReadDelegate
 import ru.rbs.mobile.payment.sdk.ui.helper.CardResolver
 import ru.rbs.mobile.payment.sdk.ui.helper.LocalizationSetting
 import ru.rbs.mobile.payment.sdk.ui.widget.BaseTextInputEditText
-import ru.rbs.mobile.payment.sdk.utils.addRightButton
+import ru.rbs.mobile.payment.sdk.utils.addRightButtons
 import ru.rbs.mobile.payment.sdk.utils.afterTextChanged
-import ru.rbs.mobile.payment.sdk.utils.clearRightButton
+import ru.rbs.mobile.payment.sdk.utils.askToEnableNfc
 import ru.rbs.mobile.payment.sdk.utils.deviceHasCamera
+import ru.rbs.mobile.payment.sdk.utils.deviceHasNFC
 import ru.rbs.mobile.payment.sdk.utils.digitsOnly
 import ru.rbs.mobile.payment.sdk.utils.onDisplayError
 import ru.rbs.mobile.payment.sdk.utils.onInputStatusChanged
 import ru.rbs.mobile.payment.sdk.utils.toExpDate
+import ru.rbs.mobile.payment.sdk.utils.toStringExpDate
+import java.util.*
 
 
 /**
  * Экран новой карты.
  */
+@Suppress("TooManyFunctions")
 class CardNewActivity : BaseActivity() {
 
     private var cryptogramProcessor: CryptogramProcessor = SDKPayment.cryptogramProcessor
@@ -61,8 +81,10 @@ class CardNewActivity : BaseActivity() {
         )
     }
     private val config: PaymentConfig by lazy {
-        intent.getSerializableExtra(INTENT_EXTRA_CONFIG) as PaymentConfig
+        intent.getParcelableExtra<PaymentConfig>(INTENT_EXTRA_CONFIG) as PaymentConfig
     }
+
+    private var nfcReader: NFCReadDelegate? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -72,7 +94,7 @@ class CardNewActivity : BaseActivity() {
             setDisplayHomeAsUpEnabled(true)
             setTitle(R.string.rbs_title_payment)
         }
-        configureUI(config)
+        configure(config)
     }
 
     private val jumpToNextInput: () -> Unit = {
@@ -87,15 +109,36 @@ class CardNewActivity : BaseActivity() {
         }
     }
 
+    private val nfcCardListener = object : NFCReadDelegate.NFCCardListener {
+        override fun onCardReadSuccess(number: String, expiryDate: Date?) {
+            cardNumberInput.setText(number)
+            expiryDate?.let { date ->
+                cardExpiryInput.setText(date.toStringExpDate())
+            } ?: cardExpiryInput.setText("")
+        }
+
+        override fun onCardReadError(e: Exception) {
+            val errorMessage = when (e) {
+                is CommunicationException -> R.string.rbs_nfc_do_not_move_card
+                else -> R.string.rbs_nfc_read_error
+            }
+            Toast.makeText(
+                this@CardNewActivity,
+                errorMessage,
+                Toast.LENGTH_SHORT
+            ).show()
+        }
+    }
+
     private fun hideKeyboard() {
         val imm: InputMethodManager =
             getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
-        var view: View = currentFocus ?: View(this)
+        val view: View = currentFocus ?: View(this)
         imm.hideSoftInputFromWindow(view.windowToken, 0)
         view.clearFocus()
     }
 
-    private fun configureUI(config: PaymentConfig) {
+    private fun configure(config: PaymentConfig) {
         bankCardView.setupUnknownBrand()
         cardNumberInput onInputStatusChanged jumpToNextInput
         cardExpiryInput onInputStatusChanged jumpToNextInput
@@ -108,7 +151,10 @@ class CardNewActivity : BaseActivity() {
         cardExpiryInput afterTextChanged { expiry -> bankCardView.setExpiry(expiry) }
         cardNumberInput afterTextChanged { number ->
             bankCardView.setNumber(number)
-            cardResolver.resolve(number)
+            cardResolver.resolve(
+                number = number,
+                withDelay = true
+            )
         }
         cardNumberInput
         doneButton.setOnClickListener { onDone() }
@@ -136,11 +182,34 @@ class CardNewActivity : BaseActivity() {
                 bankCardView.enableHolderName(true)
             }
         }
-        if (config.cameraScannerOptions == CameraScannerOptions.ENABLED && deviceHasCamera(this)) {
-            cardNumberInput.addRightButton(R.drawable.ic_card) { startScanner() }
+        val buttons: MutableList<Pair<Int, () -> Unit>> = mutableListOf()
+        if (config.nfcScannerOptions == NfcScannerOptions.ENABLED && deviceHasNFC(this)) {
+            nfcReader = NFCReadDelegate(NfcAdapter.getDefaultAdapter(applicationContext)).apply {
+                nfcCardListener = this@CardNewActivity.nfcCardListener
+            }
+            buttons.add(R.drawable.ic_nfc to { showHintNFC() })
         } else {
-            cardCodeInput.clearRightButton()
+            nfcReader = null
         }
+        if (config.cameraScannerOptions == CameraScannerOptions.ENABLED && deviceHasCamera(this)) {
+            buttons.add(R.drawable.ic_card to { startScanner() })
+        }
+        cardNumberInput.addRightButtons(buttons)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        nfcReader?.onResume(this, javaClass)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        nfcReader?.onPause(this)
+    }
+
+    override fun onNewIntent(intent: Intent) {
+        super.onNewIntent(intent)
+        nfcReader?.onNewIntent(intent)
     }
 
     private fun onDone() {
@@ -160,30 +229,36 @@ class CardNewActivity : BaseActivity() {
         return fields
     }
 
+    @Suppress("TooGenericExceptionCaught")
     private fun preparePaymentData() {
         workScope.launch(Dispatchers.Main) {
-            val cryptogram = cryptogramProcessor.create(
-                order = config.order,
-                uuid = config.uuid,
-                timestamp = config.timestamp,
-                cardInfo = CardInfo(
-                    identifier = CardPanIdentifier(
-                        cardNumberInput.text.toString().digitsOnly()
-                    ),
-                    expDate = cardExpiryInput.text.toString().toExpDate(),
-                    cvv = cardCodeInput.text.toString().toInt()
-                )
-            )
-            finishWithResult(
-                PaymentData(
-                    status = PaymentDataStatus.SUCCEEDED,
-                    cryptogram = cryptogram,
-                    info = PaymentInfoNewCard(
-                        saveCard = checkSaveCard.isChecked,
-                        holder = cardHolderInput.text.toString()
+            try {
+                val cryptogram = cryptogramProcessor.create(
+                    order = config.order,
+                    uuid = config.uuid,
+                    timestamp = config.timestamp,
+                    cardInfo = CardInfo(
+                        identifier = CardPanIdentifier(
+                            cardNumberInput.text.toString().digitsOnly()
+                        ),
+                        expDate = cardExpiryInput.text.toString().toExpDate(),
+                        cvv = cardCodeInput.text.toString().toInt()
                     )
                 )
-            )
+                finishWithResult(
+                    PaymentData(
+                        status = PaymentDataStatus.SUCCEEDED,
+                        cryptogram = cryptogram,
+                        info = PaymentInfoNewCard(
+                            order = config.order,
+                            saveCard = checkSaveCard.isChecked,
+                            holder = cardHolderInput.text.toString()
+                        )
+                    )
+                )
+            } catch (e: Exception) {
+                finishWithError(exception = e)
+            }
         }
     }
 
@@ -197,12 +272,23 @@ class CardNewActivity : BaseActivity() {
             putExtra(EXTRA_USE_PAYPAL_ACTIONBAR_ICON, false)
             putExtra(EXTRA_SUPPRESS_CONFIRMATION, true)
             putExtra(CardIOActivity.EXTRA_SUPPRESS_MANUAL_ENTRY, true)
-            putExtra(CardIOActivity.EXTRA_SCAN_INSTRUCTIONS, getString(R.string.rbs_card_scan_message))
+            putExtra(
+                CardIOActivity.EXTRA_SCAN_INSTRUCTIONS,
+                getString(R.string.rbs_card_scan_message)
+            )
             LocalizationSetting.getLanguage()?.toLanguageTag().let { languageTag ->
                 putExtra(EXTRA_LANGUAGE_OR_LOCALE, languageTag)
             }
         }
         startActivityForResult(scanIntent, REQUEST_CODE_SCAN_CARD)
+    }
+
+    private fun showHintNFC() {
+        if (nfcReader!!.isEnabled()) {
+            Toast.makeText(this, R.string.rbs_nfc_hold_card_to_phone, Toast.LENGTH_SHORT).show()
+        } else {
+            askToEnableNfc(this)
+        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
