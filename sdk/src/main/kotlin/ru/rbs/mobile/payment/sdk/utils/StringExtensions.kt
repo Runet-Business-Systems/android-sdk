@@ -70,10 +70,13 @@ fun String.noSpaces(maxLength: Int? = null) = run {
  * @return информацию о сроке действия карты.
  */
 @Suppress("MagicNumber")
-fun String.toExpDate(): ExpiryDate = digitsOnly().let {
-    ExpiryDate(
-        expMonth = it.substring(1, 2).toInt(),
-        expYear = it.substring(2, 4).toInt() + (Calendar.getInstance().get(Calendar.YEAR) % 100)
+fun String.toExpDate(): ExpiryDate {
+    if (!matches("\\d{2}/\\d{2}".toRegex())) {
+        throw IllegalArgumentException("Incorrect format, should be MM/YY.")
+    }
+    return ExpiryDate(
+        expMonth = substring(0, 2).toInt(),
+        expYear = substring(3, 5).toInt() + 2000
     )
 }
 
