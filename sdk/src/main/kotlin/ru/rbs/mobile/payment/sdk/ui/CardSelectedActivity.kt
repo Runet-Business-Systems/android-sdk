@@ -4,11 +4,14 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import android.view.View.INVISIBLE
+import android.view.View.VISIBLE
 import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_card_new.bankCardView
 import kotlinx.android.synthetic.main.activity_card_new.cardCodeInput
 import kotlinx.android.synthetic.main.activity_card_new.doneButton
 import kotlinx.android.synthetic.main.activity_card_new.toolbar
+import kotlinx.android.synthetic.main.activity_card_selected.cardCodeInputLayout
 import kotlinx.android.synthetic.main.list_item_card_saved.view.cardExpiry
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -57,6 +60,9 @@ class CardSelectedActivity : BaseActivity() {
         config.buttonText?.let { text ->
             doneButton.text = text
         }
+        config.bindingCVCRequired.let { cvcRequired ->
+            cardCodeInputLayout.visibility = if (cvcRequired) VISIBLE else INVISIBLE
+        }
         bankCardView.apply {
             setNumber(card.pan)
             enableHolderName(false)
@@ -79,7 +85,7 @@ class CardSelectedActivity : BaseActivity() {
     }
 
     private fun onDone() {
-        if (!config.bindingCVCRequired && cardCodeInput.text.toString().isEmpty()) {
+        if (!config.bindingCVCRequired) {
             preparePaymentData()
         } else if (cardCodeInput.errorMessage != null) {
             cardCodeInput.showError = true

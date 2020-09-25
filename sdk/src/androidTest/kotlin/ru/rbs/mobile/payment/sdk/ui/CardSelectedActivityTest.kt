@@ -117,7 +117,7 @@ class CardSelectedActivityTest :
     }
 
     @Test
-    fun shouldRequireCVCIfInputOneDigit() {
+    fun shouldHideCVCInput() {
         val config = defaultConfig().copy(bindingCVCRequired = false)
 
         val launchIntent = CardSelectedActivity.prepareIntent(
@@ -130,17 +130,14 @@ class CardSelectedActivityTest :
         )
         activityTestRule.launchActivity(launchIntent)
         sleep()
-        onView(withId(R.id.cardCodeInput)).perform(typeText("1"))
-        takeScreen()
 
+        onView(withId(R.id.cardCodeInputLayout)).check(matches(not(isDisplayed())))
+        onView(withId(R.id.cardCodeInput)).check(matches(not(isDisplayed())))
         onView(withId(R.id.doneButton)).perform(click())
+
         takeScreen()
-
-        onView(withText(R.string.rbs_card_incorrect_cvc)).inRoot(withDecorView(not(getActivity().window.decorView)))
-            .check(matches(isDisplayed()))
-
         coVerify {
-            mockCryptogramProcessor.create(any(), any(), any(), any()) wasNot called
+            mockCryptogramProcessor.create(any(), any(), any(), any())
         }
     }
 
