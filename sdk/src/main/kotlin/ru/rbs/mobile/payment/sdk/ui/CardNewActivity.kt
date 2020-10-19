@@ -60,6 +60,8 @@ import ru.rbs.mobile.payment.sdk.utils.askToEnableNfc
 import ru.rbs.mobile.payment.sdk.utils.deviceHasCamera
 import ru.rbs.mobile.payment.sdk.utils.deviceHasNFC
 import ru.rbs.mobile.payment.sdk.utils.digitsOnly
+import ru.rbs.mobile.payment.sdk.utils.finishWithError
+import ru.rbs.mobile.payment.sdk.utils.finishWithResult
 import ru.rbs.mobile.payment.sdk.utils.onDisplayError
 import ru.rbs.mobile.payment.sdk.utils.onInputStatusChanged
 import ru.rbs.mobile.payment.sdk.utils.toExpDate
@@ -242,7 +244,7 @@ class CardNewActivity : BaseActivity() {
                             cardNumberInput.text.toString().digitsOnly()
                         ),
                         expDate = cardExpiryInput.text.toString().toExpDate(),
-                        cvv = cardCodeInput.text.toString().toInt()
+                        cvv = cardCodeInput.text.toString()
                     )
                 )
                 finishWithResult(

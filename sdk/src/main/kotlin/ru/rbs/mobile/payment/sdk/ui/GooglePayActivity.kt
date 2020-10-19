@@ -18,6 +18,7 @@ import ru.rbs.mobile.payment.sdk.gpay.GooglePayUtils
 import ru.rbs.mobile.payment.sdk.model.GooglePayPaymentConfig
 import ru.rbs.mobile.payment.sdk.model.PaymentDataStatus
 import ru.rbs.mobile.payment.sdk.model.PaymentInfoGooglePay
+import ru.rbs.mobile.payment.sdk.utils.finishWithResult
 import com.google.android.gms.wallet.PaymentData as GPaymentData
 
 /**

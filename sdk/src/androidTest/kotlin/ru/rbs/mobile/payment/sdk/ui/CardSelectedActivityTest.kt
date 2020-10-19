@@ -22,6 +22,8 @@ import ru.rbs.mobile.payment.sdk.SDKConfigBuilder
 import ru.rbs.mobile.payment.sdk.SDKPayment
 import ru.rbs.mobile.payment.sdk.component.CryptogramProcessor
 import ru.rbs.mobile.payment.sdk.model.Card
+import ru.rbs.mobile.payment.sdk.model.CardBindingIdIdentifier
+import ru.rbs.mobile.payment.sdk.model.CardInfo
 import ru.rbs.mobile.payment.sdk.test.PaymentConfigTestProvider.defaultConfig
 import ru.rbs.mobile.payment.sdk.test.SleepEmulator.sleep
 import ru.rbs.mobile.payment.sdk.test.core.CoreUITest
@@ -113,6 +115,46 @@ class CardSelectedActivityTest :
 
         coVerify {
             mockCryptogramProcessor.create(any(), any(), any(), any()) wasNot called
+        }
+    }
+
+    @Test
+    fun shouldProceedValidData() {
+        coEvery {
+            mockCryptogramProcessor.create(any(), any(), any(), any())
+        } returns ""
+
+        val config = defaultConfig().copy(bindingCVCRequired = true)
+
+        val launchIntent = CardSelectedActivity.prepareIntent(
+            InstrumentationRegistry.getInstrumentation().targetContext,
+            config,
+            Card( // mastercard
+                pan = "492980xxxxxx7724",
+                bindingId = "0a72fe5e-ffb7-44f6-92df-8787e8a8f440"
+            )
+        )
+        activityTestRule.launchActivity(launchIntent)
+        sleep()
+        takeScreen()
+        onView(withId(R.id.cardCodeInput)).perform(typeText("012"))
+        takeScreen()
+        onView(withId(R.id.doneButton)).perform(click())
+
+        coVerify {
+            mockCryptogramProcessor.create(
+                order = eq(config.order),
+                timestamp = eq(config.timestamp),
+                uuid = eq(config.uuid),
+                cardInfo = eq(
+                    CardInfo(
+                        identifier = CardBindingIdIdentifier(
+                            value = "0a72fe5e-ffb7-44f6-92df-8787e8a8f440"
+                        ),
+                        cvv = "012"
+                    )
+                )
+            )
         }
     }
 

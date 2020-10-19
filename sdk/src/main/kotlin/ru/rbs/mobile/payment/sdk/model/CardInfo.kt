@@ -15,13 +15,13 @@ import ru.rbs.mobile.payment.sdk.model.CardIdentifier.Companion.writeCardIdentif
 data class CardInfo(
     val identifier: CardIdentifier,
     val expDate: ExpiryDate? = null,
-    val cvv: Int? = null
+    val cvv: String? = null
 ) : Parcelable {
 
     constructor(source: Parcel) : this(
         source.readCardIdentifier(),
         source.readParcelable<ExpiryDate?>(ExpiryDate::class.java.classLoader),
-        source.readValue(Int::class.java.classLoader) as Int?
+        source.readString()
     )
 
     override fun describeContents() = 0

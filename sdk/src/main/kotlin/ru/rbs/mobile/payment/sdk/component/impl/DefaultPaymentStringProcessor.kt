@@ -48,7 +48,7 @@ class DefaultPaymentStringProcessor : PaymentStringProcessor {
             append(SPLASH)
             append(if (cardIdentifier is CardPanIdentifier) cardIdentifier.value else "")
             append(SPLASH)
-            append(cardInfo.cvv?.toString() ?: "")
+            append(cardInfo.cvv ?: "")
             append(SPLASH)
             append(cardInfo.expDate?.format() ?: "")
             append(SPLASH)

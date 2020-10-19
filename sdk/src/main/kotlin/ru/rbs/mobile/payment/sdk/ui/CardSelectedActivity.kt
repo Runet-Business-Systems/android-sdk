@@ -27,6 +27,8 @@ import ru.rbs.mobile.payment.sdk.model.PaymentData
 import ru.rbs.mobile.payment.sdk.model.PaymentDataStatus
 import ru.rbs.mobile.payment.sdk.model.PaymentInfoBindCard
 import ru.rbs.mobile.payment.sdk.ui.helper.CardResolver
+import ru.rbs.mobile.payment.sdk.utils.finishWithError
+import ru.rbs.mobile.payment.sdk.utils.finishWithResult
 import ru.rbs.mobile.payment.sdk.utils.onDisplayError
 
 /**
@@ -104,7 +106,7 @@ class CardSelectedActivity : BaseActivity() {
                     timestamp = config.timestamp,
                     cardInfo = CardInfo(
                         identifier = CardBindingIdIdentifier(card.bindingId),
-                        cvv = cardCodeInput.text.toString().toIntOrNull()
+                        cvv = cardCodeInput.text.toString()
                     )
                 )
                 finishWithResult(

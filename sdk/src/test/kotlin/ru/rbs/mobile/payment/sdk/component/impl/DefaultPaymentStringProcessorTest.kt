@@ -29,7 +29,7 @@ class DefaultPaymentStringProcessorTest {
             uuid = "fd4b1011-727a-41e8-95b4-d7092d729022",
             cardInfo = CardInfo(
                 identifier = CardPanIdentifier("4532896701439077"),
-                cvv = 444,
+                cvv = "444",
                 expDate = ExpiryDate(2020, 12)
             )
         )
@@ -60,7 +60,7 @@ class DefaultPaymentStringProcessorTest {
             uuid = "fd4b1011-727a-41e8-95b4-d7092d729022",
             cardInfo = CardInfo(
                 identifier = CardPanIdentifier("4532896701439077"),
-                cvv = 444
+                cvv = "444"
             )
         )
 
@@ -88,7 +88,7 @@ class DefaultPaymentStringProcessorTest {
             uuid = "fd4b1011-727a-41e8-95b4-d7092d729022",
             cardInfo = CardInfo(
                 identifier = CardBindingIdIdentifier("47eb0336-5ad9-4e03-8a1e-b9f3656ec768"),
-                cvv = 444,
+                cvv = "444",
                 expDate = ExpiryDate(2020, 12)
             )
         )
@@ -119,7 +119,7 @@ class DefaultPaymentStringProcessorTest {
             uuid = "fd4b1011-727a-41e8-95b4-d7092d729022",
             cardInfo = CardInfo(
                 identifier = CardBindingIdIdentifier("47eb0336-5ad9-4e03-8a1e-b9f3656ec768"),
-                cvv = 444
+                cvv = "444"
             )
         )
 

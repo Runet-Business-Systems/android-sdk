@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.res.Configuration
 import android.content.res.Resources
 import android.os.Build
+import android.os.Bundle
 import android.os.Handler
 import android.os.LocaleList
 import androidx.appcompat.app.AppCompatActivity
@@ -22,8 +23,23 @@ internal open class UIDelegate(private val activity: AppCompatActivity) {
     private lateinit var currentLanguage: Locale
     private lateinit var currentTheme: Theme
 
-    fun onCreate() {
+    fun onCreate(bundle: Bundle?) {
+        bundle?.apply {
+            getSerializable(BUNDLE_LANGUAGE)?.let {
+                LocalizationSetting.setLanguage(it as Locale)
+            }
+            getSerializable(BUNDLE_THEME)?.let {
+                ThemeSetting.setTheme(it as Theme)
+            }
+        }
         setup(true)
+    }
+
+    fun onSaveInstanceState(outState: Bundle) {
+        outState.apply {
+            putSerializable(BUNDLE_LANGUAGE, currentLanguage)
+            putSerializable(BUNDLE_THEME, currentTheme)
+        }
     }
 
     fun onResume() {
@@ -129,5 +145,10 @@ internal open class UIDelegate(private val activity: AppCompatActivity) {
                 activity.recreate()
             }
         }
+    }
+
+    companion object {
+        private const val BUNDLE_LANGUAGE = "payment.sdk.settings.language"
+        private const val BUNDLE_THEME = "payment.sdk.settings.theme"
     }
 }

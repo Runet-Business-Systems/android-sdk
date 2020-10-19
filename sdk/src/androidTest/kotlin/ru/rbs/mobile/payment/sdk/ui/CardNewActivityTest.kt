@@ -25,7 +25,10 @@ import ru.rbs.mobile.payment.sdk.R
 import ru.rbs.mobile.payment.sdk.SDKConfigBuilder
 import ru.rbs.mobile.payment.sdk.SDKPayment
 import ru.rbs.mobile.payment.sdk.component.CryptogramProcessor
+import ru.rbs.mobile.payment.sdk.model.CardInfo
+import ru.rbs.mobile.payment.sdk.model.CardPanIdentifier
 import ru.rbs.mobile.payment.sdk.model.CardSaveOptions
+import ru.rbs.mobile.payment.sdk.model.ExpiryDate
 import ru.rbs.mobile.payment.sdk.model.HolderInputOptions
 import ru.rbs.mobile.payment.sdk.test.PaymentConfigTestProvider.defaultConfig
 import ru.rbs.mobile.payment.sdk.test.SleepEmulator.sleep
@@ -237,7 +240,7 @@ class CardNewActivityTest : CoreUITest<CardNewActivity>(CardNewActivity::class.j
         takeScreen()
 
         onView(withId(R.id.cardCodeInput)).perform(
-            typeText("123"),
+            typeText("012"),
             pressKey(KeyEvent.KEYCODE_ENTER)
         )
         takeScreen()
@@ -251,7 +254,23 @@ class CardNewActivityTest : CoreUITest<CardNewActivity>(CardNewActivity::class.j
         onView(withId(R.id.doneButton)).perform(click())
 
         coVerify {
-            mockCryptogramProcessor.create(any(), any(), any(), any())
+            mockCryptogramProcessor.create(
+                order = eq(config.order),
+                timestamp = eq(config.timestamp),
+                uuid = eq(config.uuid),
+                cardInfo = eq(
+                    CardInfo(
+                        identifier = CardPanIdentifier(
+                            value = "5586200016956614"
+                        ),
+                        expDate = ExpiryDate(
+                            expYear = 2025,
+                            expMonth = 12
+                        ),
+                        cvv = "012"
+                    )
+                )
+            )
         }
     }
 
