@@ -37,6 +37,8 @@
     "*.jar",
     "*.bat",
     "*.pro",
+    "*.exec",
+    "EMVCo_3DS_*.pdf",
     "local.properties"
   ],
   "dictionaries": [

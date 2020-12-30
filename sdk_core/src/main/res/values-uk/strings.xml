@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="rbs_card_incorrect_length">Довжина номера картки повинна становити 16–19 цифр</string>
+    <string name="rbs_card_incorrect_number">Номер картки вказаний невірно</string>
+    <string name="rbs_card_incorrect_expiry">Термін дії картки зазначений неправильно</string>
+    <string name="rbs_card_incorrect_cvc">CVC2/CVV2 вказано невірно</string>
+    <string name="rbs_card_incorrect_card_holder">Власник картки вказаний невірно</string>
+    <string name="rbs_order_incorrect_length">Order number should not be empty</string>
+    <string name="rbs_binding_incorrect_length">Incorrect bindingId length</string>
+    <string name="rbs_pub_key_required">Public key required</string>
+    <string name="rbs_binding_required">Binding id required</string>
+    <string name="rbs_binding_incorrect">Binding id has incorrect format</string>
+</resources>

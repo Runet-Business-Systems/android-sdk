@@ -10,6 +10,7 @@ build/
 .idea
 *.iws
 *.ipr
+*.exec
 out/
 /local.properties
 /.idea/caches

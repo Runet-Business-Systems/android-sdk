@@ -1,9 +1,11 @@
 # RBS Payment SDK
 
-## Подключение к Gradle проекту, добавлением файла .aar библиотеки
+## Подключение к Gradle проекту, добавлением файлов .aar библиотеки
 
-Необходимо добавить в папку `libs` файл библиотеки `sdk-release.aar`, затем указать зависимость от
-добавленной библиотеки.
+Необходимо добавить в папку `libs` файл библиотеки `sdk_core-release.aar`, затем указать зависимость от добавленной библиотеки.
+
+Если необходимо использовать графический интерфейс, в папку `libs` следует также добавить библиотеку `sdk_ui-release.aar` и
+указать зависимость.
 
 ### build.gradle.kts
 
@@ -18,7 +20,10 @@
     }
     
     dependencies {
-        implementation(group = "", name = "sdk-release", ext = "aar")
+        // зависимость обязательна для добавления
+        implementation(group = "", name = "sdk_core-release", ext = "aar")
+        // если необходимо использовать графический интерфейс
+        implementation(group = "", name = "sdk_ui-release", ext = "aar")
         
         implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.7")
         implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.7")
@@ -42,7 +47,10 @@
     }
 
     dependencies {
-        implementation(group:'', name:'sdk-release', ext:'aar')
+        // зависимость обязательна для добавления
+        implementation(group:'', name:'sdk_core-release', ext:'aar')
+        // если необходимо использовать графический интерфейс
+        implementation(group:'', name:'sdk_ui-release', ext:'aar')
 
         implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.7")
         implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.7")
@@ -53,9 +61,69 @@
     }
 ```
 
+# Пример Kotlin_core (без графического интерфейса)
+
 ## Пример формирования криптограммы
 
-### Пример Kotlin
+```kotlin
+
+import ru.rbs.mobile.payment.sdk.core.SDKCore
+import ru.rbs.mobile.payment.sdk.core.TokenResult
+import ru.rbs.mobile.payment.sdk.core.model.BindingParams
+import ru.rbs.mobile.payment.sdk.core.model.CardParams
+import ru.rbs.mobile.payment.sdk.core.validation.BaseValidator
+import ru.rbs.mobile.payment.sdk.core.validation.CardCodeValidator
+import ru.rbs.mobile.payment.sdk.core.validation.CardExpiryValidator
+import ru.rbs.mobile.payment.sdk.core.validation.CardHolderValidator
+import ru.rbs.mobile.payment.sdk.core.validation.CardNumberValidator
+import ru.rbs.mobile.payment.sdk.core.validation.OrderNumberValidator
+
+class MainActivity : AppCompatActivity() {
+    // инициализация валидаторов для полей ввода информации о карте
+    private val cardNumberValidator by lazy { CardNumberValidator(this) }
+    private val cardExpiryValidator by lazy { CardExpiryValidator(this) }
+    private val cardCodeValidator by lazy { CardCodeValidator(this) }
+    private val cardHolderValidator by lazy { CardHolderValidator(this) }
+    private val orderNumberValidator by lazy { OrderNumberValidator(this) }
+    private val sdkCore by lazy { SDKCore(context = this) }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        // установка валидаторов на поля ввода информации о карте
+        cardNumberInput.setupValidator(cardNumberValidator)
+        cardExpiryInput.setupValidator(cardExpiryValidator)
+        cardCodeInput.setupValidator(cardCodeValidator)
+        cardHolderInput.setupValidator(cardHolderValidator)
+        mdOrderInput.setupValidator(orderNumberValidator)
+
+        // создание объекта и инициализация полей для новой карты
+        val params = CardParams(
+            mdOrder = mdOrderInput.text.toString(),
+            pan = cardNumberInput.text.toString(),
+            cvc = cardCodeInput.text.toString(),
+            expiryMMYY = cardExpiryInput.text.toString(),
+            cardHolder = cardHolderInput.text.toString(),
+            pubKey = pubKeyInput.text.toString()
+        )
+        // вызов метода для получения криптограммы для новой карты
+        sdkCore.generateWithCard(params)
+
+        // создание объекта и инициализация полей для привязанной карты
+        val params = BindingParams(
+            mdOrder = mdOrderInput.text.toString(),
+            bindingID = bindingIdInput.text.toString(),
+            cvc = "123",
+            pubKey = pubKeyInput.text.toString()
+        )
+        // вызов метода для получения криптограммы для привязанной карты
+        sdkCore.generateWithBinding(params)
+    }
+}
+```
+
+# Пример Kotlin_ui (с графическим интерфейсом)
+
+## Пример формирования криптограммы
+
 
 ```kotlin
 
@@ -69,6 +137,7 @@ class MarketApplication : Application() {
     }
 }
 
+import ru.rbs.mobile.payment.sdk.core.model.ExpiryDate
 import ru.rbs.mobile.payment.sdk.PaymentConfigBuilder
 import ru.rbs.mobile.payment.sdk.ResultCallback
 import ru.rbs.mobile.payment.sdk.SDKPayment
@@ -156,7 +225,9 @@ class MainActivity : AppCompatActivity() {
 }
 ```
 
-### Пример Java
+# Пример Java_ui (с графическим интерфейсом)
+
+## Пример формирования криптограммы
 
 ```java
 
@@ -171,6 +242,7 @@ public class MarketApplication extends Application {
     }
 }
 
+import ru.rbs.mobile.payment.sdk.core.model.ExpiryDate;
 import ru.rbs.mobile.payment.sdk.PaymentConfigBuilder;
 import ru.rbs.mobile.payment.sdk.SDKPayment;
 import ru.rbs.mobile.payment.sdk.model.Card;
@@ -238,6 +310,27 @@ public class MainActivity extends AppCompatActivity {
     }
 }
 ```
+
+# Ошибки валидации полей
+
+|Поле|Ошибка|Описание|
+|:-----------|:---------|:---------------------|
+| PAN        | required | Указано пустое поле  |
+|            | invalid  | Некорректное значение   |
+|            | invalid-format  | Используются не допустимые символы. Доступны только цифры   |
+| CVC        | required | Указано пустое поле  |
+|            | invalid  | Некорректное значение   |
+| EXPIRY     | required | Указано пустое поле  |
+|            | invalid  | Некорректное значение   |
+|            | invalid-format  | Формат не соответствует шаблону MM/YY   |
+| CARDHOLDER | required | Указано пустое поле  |
+|            | invalid  | Некорректное значение   |
+|            | invalid-format  | Используются запрещенные символы. Доступны латинские символы и пробел   |
+| BINDING_ID | required | Указано пустое поле  |
+|            | invalid  | Некорректное значение   |
+| MD_ORDER   | required | Указано пустое поле  |
+|            | invalid  | Некорректное значение   |
+| PUB_KEY    | required | Указано пустое поле  |
 
 ### Конфигурация SDK
 
@@ -750,3 +843,132 @@ val paymentConfig = PaymentConfigBuilder(order)
 ```kotlin
 Card("492980xxxxxx7724", "aa199a55-cf16-41b2-ac9e-cddc731edd19", ExpiryDate(2025, 12))
 ```
+
+# Пример оплаты с 3DS
+
+## Подключение библиотеки 3DS2
+
+Необходимо добавить в папку `libs` файл библиотеки `sdk_threeds-release.aar`, затем указать зависимость от добавленной 
+библиотеки.
+
+### build.gradle.kts
+
+```kotlin
+    allprojects {
+        repositories {
+            // ...
+            flatDir {
+                dirs("libs")
+            }
+        }
+    }
+    
+    dependencies {
+        // зависимость для подключения функционала подтверждения через 3DS
+        implementation(group = "", name = "sdk_threeds-release", ext = "aar")
+    }
+```
+
+### build.gradle
+
+```groovy
+    allprojects {
+       repositories {
+          // ...
+          flatDir {
+            dirs 'libs'
+          }
+       }
+    }
+
+    dependencies {
+        // зависимость для подключения функционала подтверждения через 3DS
+        implementation(group = "", name = "sdk_threeds-release", ext = "aar")
+    }
+```
+
+## Выполнение оплаты с подтверждением через 3DS2
+
+```kotlin
+private val factory = Factory()
+
+threeDS2Service = factory.newThreeDS2Service()
+val configParams = factory.newConfigParameters()
+val uiCustomization = factory.newUiCustomization()
+threeDS2Service.initialize(
+    context,
+    configParams,
+    "en-US",
+    uiCustomization
+)
+
+val transaction = threeDS2Service.createTransaction("F000000000", "2.1.0")
+
+//  Пример создания транзакции с шифрованием deviceInfo переданным RSA ключом.
+//  val rsaPem: String = ...
+//  transaction = threeDS2Service.createTransactionWithRSADSKey(
+//      rsaPem,
+//      "2.1.0"
+//   )
+
+//   Пример создания транзакции с шифрованием deviceInfo переданным EC ключом.
+//   val ecPem: String = ""
+//   val directoryServerID: String = ""
+//   transaction = threeDS2Service.createTransactionWithECDSKey(
+//       ecPem,
+//       directoryServerID,
+//       "2.1.0"
+//    )
+
+// Доступные данные, для отправки на платежный шлюз
+val authRequestParams = transaction.authenticationRequestParameters!!
+val encryptedDeviceInfo: String = authRequestParams.deviceData
+val sdkTransactionID: String = authRequestParams.sdkTransactionID
+val sdkAppId: String = authRequestParams.sdkAppID
+val sdkEphmeralPublicKey: String = authRequestParams.sdkEphemeralPublicKey
+val sdkReferenceNumber: String = authRequestParams.sdkReferenceNumber
+
+val challengeParameters = factory.newChallengeParameters()
+
+// Параметры для запуска Challenge Flow.
+challengeParameters.acsTransactionID =
+    paymentOrderSecondStepResponse.threeDSAcsTransactionId
+challengeParameters.acsRefNumber = paymentOrderSecondStepResponse.threeDSAcsRefNumber
+challengeParameters.acsSignedContent =
+    paymentOrderSecondStepResponse.threeDSAcsSignedContent
+challengeParameters.set3DSServerTransactionID(paymentOrderResponse.threeDSServerTransId)
+
+// Слушатель для обработки процесса выполнения Challenge Flow.
+val challengeStatusReceiver: ChallengeStatusReceiver = object : ChallengeStatusReceiver {
+    
+    override fun cancelled() {}
+
+    override fun protocolError(protocolErrorEvent: ProtocolErrorEvent) {}
+
+    override fun runtimeError(runtimeErrorEvent: RuntimeErrorEvent) {}
+
+    override fun completed(completionEvent: CompletionEvent) {}
+
+    override fun timedout() {}
+}
+
+val timeOut = 5
+
+// Запуск Challenge Flow.
+transaction.doChallenge(
+    activity,
+    challengeParameters,
+    challengeStatusReceiver,
+    timeOut
+)
+```
+
+Полный пример кода можно посмотреть в файле `ru.rbs.mobile.payment.sample.kotlin.threeds.ThreeDSActivity`.
+
+В разделе `documentation/threeds` можно найти дополнительную информации с описанием доступных параметров 
+`ConfigParameters` и `UiCustomization` для настройки экрана 3DS, а так же описание процесса взаимодействия 3DS SDK
+серверным приложение.
+
+Пример экрана ввода кода подтверждения:
+
+![threeds_challenge_flow](threeds_challenge_flow.png)

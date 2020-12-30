@@ -18,3 +18,13 @@ jetbrains
 emvnfccard
 transceive
 devnied
+bpcbt
+threeds
+Ephmeral
+timedout
+pojo
+Ephem
+gson
+DSSDK
+MDORDER
+ktor

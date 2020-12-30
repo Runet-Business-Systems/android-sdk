@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="rbs_card_incorrect_length">La longueur du numéro de carte doit être de 16 à 19 chiffres</string>
+    <string name="rbs_card_incorrect_number">Numéro incorrect</string>
+    <string name="rbs_card_incorrect_expiry">La date d\'expiration de la carte est incorrecte</string>
+    <string name="rbs_card_incorrect_cvc">Code de sûreté incorrect</string>
+    <string name="rbs_card_incorrect_card_holder">Nom incorrect</string>
+    <string name="rbs_order_incorrect_length">Order number should not be empty</string>
+    <string name="rbs_binding_incorrect_length">Incorrect bindingId length</string>
+    <string name="rbs_pub_key_required">Public key required</string>
+    <string name="rbs_binding_required">Binding id required</string>
+    <string name="rbs_binding_incorrect">Binding id has incorrect format</string>
+</resources>
