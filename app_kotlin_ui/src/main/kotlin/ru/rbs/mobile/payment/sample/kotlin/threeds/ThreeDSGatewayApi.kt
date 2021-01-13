@@ -114,7 +114,7 @@ class ThreeDSGatewayApi {
     suspend fun executeFinishOrder(
         url: String,
         request: PaymentFinishOrderRequest
-    ) {
+    ): FinishOrderResponse {
         return withContext(Dispatchers.IO) {
             httpClient.post(url) {
                 timeout {
@@ -124,7 +124,9 @@ class ThreeDSGatewayApi {
                 }
                 body = FormDataContent(
                     Parameters.build {
-                        append("tDsTransId", request.tDsTransId)
+                        append("threeDSServerTransId", request.tDsTransId)
+                        append("userName", request.userName)
+                        append("password", request.password)
                     }
                 )
             }
@@ -182,13 +184,25 @@ class ThreeDSGatewayApi {
     )
 
     data class PaymentFinishOrderRequest(
-        val tDsTransId: String
+        val tDsTransId: String,
+        val userName: String,
+        val password: String
     )
 
     data class PaymentCheckOrderStatusRequest(
         val orderId: String,
         val userName: String,
         val password: String
+    )
+
+    @Serializable
+    data class FinishOrderResponse(
+        @SerialName("redirect")
+        val redirect: String,
+        @SerialName("errorCode")
+        val errorCode: Int,
+        @SerialName("is3DSVer2")
+        val is3DSVer2: Boolean
     )
 
     @Serializable

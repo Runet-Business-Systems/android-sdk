@@ -196,10 +196,6 @@ class ThreeDSActivity : AppCompatActivity() {
         val sdkEphmeralPublicKey: String = authRequestParams.sdkEphemeralPublicKey
         val sdkReferenceNumber: String = authRequestParams.sdkReferenceNumber
 
-        // Передаем только необходимые поля из sdkEphmeralPublicKey
-        val gson = Gson()
-        val sdkEphemPubKey: String =
-            gson.toJson(gson.fromJson(sdkEphmeralPublicKey, SdkEphemPubKey::class.java))
 
         // Получаем необходимую информацию для запуска Challenge Flow (acsSignedContent,
         // acsTransactionId, acsRefNumber).
@@ -214,7 +210,7 @@ class ThreeDSActivity : AppCompatActivity() {
                 threeDSSDK = true,
                 threeDSServerTransId = paymentOrderResponse.threeDSServerTransId,
                 threeDSSDKEncData = encryptedDeviceInfo,
-                threeDSSDKEphemPubKey = sdkEphemPubKey,
+                threeDSSDKEphemPubKey = sdkEphmeralPublicKey,
                 threeDSSDKAppId = sdkAppId,
                 threeDSSDKTransId = sdkTransactionID,
                 threeDSSDKReferenceNumber = sdkReferenceNumber
@@ -281,16 +277,14 @@ class ThreeDSActivity : AppCompatActivity() {
      * @param tDsTransId идентификатор транзакции на 3DS сервере.
      */
     private fun finishOrder(tDsTransId: String) = launchGlobalScope {
-        try {
-            api.executeFinishOrder(
-                url = "$argBaseUrl/rest/finish3dsVer2.do",
-                request = PaymentFinishOrderRequest(
-                    tDsTransId = tDsTransId
-                )
+        api.executeFinishOrder(
+            url = "$argBaseUrl/rest/finish3dsVer2Payment.do",
+            request = PaymentFinishOrderRequest(
+                tDsTransId = tDsTransId,
+                userName = argUserName,
+                password = argPassword
             )
-        } catch (e: Exception) {
-            // TODO нужны доработки метода finish3dsVer2.do
-        }
+        )
     }
 
     /**
