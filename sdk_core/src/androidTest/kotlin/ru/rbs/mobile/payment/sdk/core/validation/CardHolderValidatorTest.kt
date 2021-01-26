@@ -1,14 +1,23 @@
 package ru.rbs.mobile.payment.sdk.core.validation
 
-import org.junit.Assert.*
+import android.Manifest
+import androidx.test.rule.GrantPermissionRule.grant
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
+import org.junit.Assert.assertNull
+import org.junit.Assert.assertTrue
 import org.junit.Before
+import org.junit.Rule
 import org.junit.Test
+import org.junit.rules.TestRule
 import ru.rbs.mobile.payment.sdk.core.R
 import ru.rbs.mobile.payment.sdk.core.test.getString
 import ru.rbs.mobile.payment.sdk.core.test.targetContext
 
 class CardHolderValidatorTest {
 
+    @get:Rule
+    val permissionRule: TestRule = grant(Manifest.permission.WRITE_EXTERNAL_STORAGE)
     private lateinit var cardHolderValidator: CardHolderValidator
 
     @Before

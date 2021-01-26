@@ -1,12 +1,17 @@
 package ru.rbs.mobile.payment.sdk.core.utils
 
+import android.Manifest
+import androidx.test.rule.GrantPermissionRule.grant
 import org.junit.Assert.assertEquals
+import org.junit.Rule
 import org.junit.Test
-import ru.rbs.mobile.payment.sdk.core.utils.parseColor
-import ru.rbs.mobile.payment.sdk.core.utils.toExpDate
+import org.junit.rules.TestRule
 import ru.rbs.mobile.payment.sdk.core.model.ExpiryDate
 
 class StringExtensionsKtInstrumentalTest {
+
+    @get:Rule
+    val permissionRule: TestRule = grant(Manifest.permission.WRITE_EXTERNAL_STORAGE)
 
     @Test
     fun parseColorShouldConvertShortHexNumber() {

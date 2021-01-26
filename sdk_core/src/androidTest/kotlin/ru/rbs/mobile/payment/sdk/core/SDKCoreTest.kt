@@ -1,16 +1,23 @@
 package ru.rbs.mobile.payment.sdk.core
 
+import android.Manifest
 import androidx.test.platform.app.InstrumentationRegistry
+import androidx.test.rule.GrantPermissionRule.grant
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotEquals
 import org.junit.Before
+import org.junit.Rule
 import org.junit.Test
+import org.junit.rules.TestRule
 import ru.rbs.mobile.payment.sdk.core.model.BindingParams
 import ru.rbs.mobile.payment.sdk.core.model.CardParams
 import ru.rbs.mobile.payment.sdk.core.model.ParamField
 import ru.rbs.mobile.payment.sdk.core.validation.ValidationCodes
 
 class SDKCoreTest {
+
+    @get:Rule
+    val permissionRule: TestRule = grant(Manifest.permission.WRITE_EXTERNAL_STORAGE)
 
     @Suppress("MaxLineLength")
     private val testPubKey =

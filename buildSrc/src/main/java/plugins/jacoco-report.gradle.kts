@@ -37,7 +37,8 @@ val sourceDirectoriesTree = fileTree(buildDir) {
 
 val executionDataTree = fileTree(buildDir) {
     include(
-        "outputs/code_coverage/**/*.ec",
+        //"outputs/code_coverage/**/*.ec",
+        "spoon-output/debug/coverage/merged-coverage.ec",
         "jacoco/jacocoTestReportDebug.exec",
         "jacoco/testDebugUnitTest.exec",
         "jacoco/test.exec"
@@ -49,7 +50,7 @@ if (tasks.findByName("jacocoAndroidTestReport") == null) {
     tasks.register<JacocoReport>("jacocoAndroidTestReport") {
         group = "verification"
         description = "Code coverage report for both Android and Unit tests."
-        dependsOn("testDebugUnitTest", "createDebugCoverageReport")
+        dependsOn("testDebugUnitTest", "spoonDebugAndroidTest")
         reports {
             xml.isEnabled = true
             html.isEnabled = true

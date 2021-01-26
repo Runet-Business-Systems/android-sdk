@@ -3,6 +3,9 @@
 buildscript {
     val kotlin_version by extra("1.4.10")
     repositories {
+        dependencies {
+            classpath(files("spoon-runner-2.0.0-SNAPSHOT.jar"))
+        }
         google()
         jcenter()
         maven(uri("https://oss.jfrog.org/artifactory/oss-snapshot-local/"))
@@ -10,7 +13,7 @@ buildscript {
     }
     dependencies {
         classpath("com.android.tools.build:gradle:4.1.0")
-        classpath("com.jaredsburrows:gradle-spoon-plugin:1.5.0")
+        classpath("com.jaredsburrows:gradle-spoon-plugin:1.5.2-SNAPSHOT")
         classpath(kotlin("gradle-plugin", version = kotlin_version))
         classpath(kotlin("serialization", version = kotlin_version))
 

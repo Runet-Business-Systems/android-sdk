@@ -287,7 +287,7 @@ class CardNewActivityTest : CoreUITest<CardNewActivity>(CardNewActivity::class.j
             closeSoftKeyboard()
         )
         takeScreen()
-
+        sleep()
         onView(withId(R.id.doneButton)).perform(click())
         takeScreen()
 

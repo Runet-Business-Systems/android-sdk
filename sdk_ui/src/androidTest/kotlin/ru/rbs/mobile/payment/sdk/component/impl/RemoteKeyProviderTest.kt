@@ -1,17 +1,25 @@
 package ru.rbs.mobile.payment.sdk.component.impl
 
+import android.Manifest
+import androidx.test.rule.GrantPermissionRule
 import kotlinx.coroutines.runBlocking
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
 import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Before
+import org.junit.Rule
 import org.junit.Test
+import org.junit.rules.TestRule
 import ru.rbs.mobile.payment.sdk.component.KeyProvider
 import ru.rbs.mobile.payment.sdk.component.KeyProviderException
 
 @Suppress("MaxLineLength")
 class RemoteKeyProviderTest {
+
+    @get:Rule
+    val permissionRule: TestRule =
+        GrantPermissionRule.grant(Manifest.permission.WRITE_EXTERNAL_STORAGE)
 
     private lateinit var keyProvider: KeyProvider
     private val server: MockWebServer = MockWebServer()

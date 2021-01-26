@@ -1,7 +1,11 @@
 package ru.rbs.mobile.payment.sdk.gpay
 
+import android.Manifest
+import androidx.test.rule.GrantPermissionRule
 import org.junit.Assert.assertEquals
+import org.junit.Rule
 import org.junit.Test
+import org.junit.rules.TestRule
 import ru.rbs.mobile.payment.sdk.gpay.AllowedPaymentMethods.Companion.allowedPaymentMethodsCreate
 import ru.rbs.mobile.payment.sdk.gpay.GooglePayAuthMethod.CRYPTOGRAM_3DS
 import ru.rbs.mobile.payment.sdk.gpay.GooglePayAuthMethod.PAN_ONLY
@@ -23,6 +27,10 @@ import ru.rbs.mobile.payment.sdk.gpay.TransactionInfo.Companion.transactionInfoC
 import java.math.BigDecimal
 
 class GooglePayPaymentDataRequestTest {
+
+    @get:Rule
+    val permissionRule: TestRule =
+        GrantPermissionRule.grant(Manifest.permission.WRITE_EXTERNAL_STORAGE)
 
     @Test
     @Suppress("MaxLineLength")

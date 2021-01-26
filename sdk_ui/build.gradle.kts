@@ -66,10 +66,15 @@ android {
 }
 
 spoon {
+    val isTagBuild = System.getenv().containsKey("CI_COMMIT_TAG")
+
     title = "RBS Payment UI SDK"
     grantAll = true
+    debug = true
     clearAppDataBeforeEachTest = true
     noAnimations = true
+    codeCoverage = true
+    shard = !isTagBuild
 }
 
 jacoco {

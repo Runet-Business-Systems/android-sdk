@@ -22,8 +22,8 @@ internal class SetupTitleTask(
         return try {
             val url = URL(urlToDisplay)
             val urlConnection: HttpURLConnection = url.openConnection() as HttpURLConnection
-            val inputStream: InputStream = urlConnection.inputStream
-            if (inputStream.available() > 0) {
+            if (urlConnection.contentLength > 0) {
+                val inputStream: InputStream = urlConnection.inputStream
                 SVG.getFromInputStream(inputStream)
             } else {
                 null

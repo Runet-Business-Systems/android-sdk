@@ -68,3 +68,8 @@ MMYY
 токена
 RSADS
 ECDS
+Qiwi
+qiwi
+Сall
+contactless
+subproject
