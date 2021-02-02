@@ -16,7 +16,7 @@ import ru.rbs.mobile.payment.sdk.model.SDKConfig
 class SDKConfigBuilder(context: Context) {
 
     private var keyProvider: KeyProvider = CachedKeyProvider(
-        RemoteKeyProvider("https://securepayments.sberbank.ru/payment/se/keys.do"),
+        RemoteKeyProvider("https://web.rbsdev.com/soyuzpayment/keys.js"),
         context.getSharedPreferences("key", Context.MODE_PRIVATE)
     )
 

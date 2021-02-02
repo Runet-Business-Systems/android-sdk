@@ -25,8 +25,6 @@ android {
 dependencies {
     implementation(group = "", name = "sdk_ui-release", ext = "aar")
     implementation(group = "", name = "sdk_core-release", ext = "aar")
-//    implementation(project(":sdk_ui"))
-//    implementation(project(":sdk_core"))
     implementation("androidx.appcompat:appcompat:1.1.0")
     implementation("androidx.constraintlayout:constraintlayout:1.1.3")
     implementation("androidx.cardview:cardview:1.0.0")

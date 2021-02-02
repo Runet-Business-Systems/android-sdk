@@ -5,12 +5,9 @@ import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
 import org.junit.After
 import org.junit.Before
-import org.junit.Ignore
 import org.junit.Test
-import ru.rbs.mobile.payment.sdk.test.SleepEmulator.sleep
 import ru.rbs.mobile.payment.sdk.test.core.CoreUIViewTest
 import ru.rbs.mobile.payment.sdk.test.junit.ConfigurationLocales
-import ru.rbs.mobile.payment.sdk.ui.helper.Locales
 
 class BankCardViewDisplayVariantsTest : CoreUIViewTest<BankCardView>() {
 
@@ -42,9 +39,9 @@ class BankCardViewDisplayVariantsTest : CoreUIViewTest<BankCardView>() {
     @Suppress("LongMethod", "ComplexMethod")
     @ConfigurationLocales(["en"])
     @Test
-    fun shouldCardDisplayVariantsLocalSberbank() {
+    fun shouldCardDisplayVariantsLocalBank() {
         takeScreen("Empty")
-        val url = server.enqueueFile("sberbank-invert.svg")
+        val url = server.enqueueFile("bank-invert.svg")
         activityTestRule.runOnUiThread {
             testedView.apply {
                 setBankLogoUrl(url)
@@ -56,7 +53,7 @@ class BankCardViewDisplayVariantsTest : CoreUIViewTest<BankCardView>() {
                 setPaymentSystem("visa", true)
             }
         }
-        takeScreen("Sberbank")
+        takeScreen("Bank")
     }
 
     @Suppress("LongMethod", "ComplexMethod")

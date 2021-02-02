@@ -170,7 +170,17 @@ class ThreeDSActivity : AppCompatActivity() {
 
         transaction?.close() // Закрываем предыдущую транзакцию если она была.
 
-        transaction = threeDS2Service.createTransaction("F000000000", "2.1.0")
+        //   Создание транзакции с шифрованием deviceInfo переданным EC ключом.
+        val ecPem: String = paymentOrderResponse.threeDSSDKKey
+        val directoryServerID: String = paymentOrderResponse.threeDSServerTransId
+        transaction = threeDS2Service.createTransactionWithECDSKey(
+           ecPem,
+           directoryServerID,
+           "2.1.0"
+        )
+
+        //  Пример создания транзакции без ключа RSA и EC
+        //  transaction = threeDS2Service.createTransaction("F000000000", "2.1.0")
 
         //  Пример создания транзакции с шифрованием deviceInfo переданным RSA ключом.
         //  val rsaPem: String = ...
@@ -178,15 +188,6 @@ class ThreeDSActivity : AppCompatActivity() {
         //      rsaPem,
         //      "2.1.0"
         //   )
-
-        //   Пример создания транзакции с шифрованием deviceInfo переданным EC ключом.
-        //   val ecPem: String = ""
-        //   val directoryServerID: String = ""
-        //   transaction = threeDS2Service.createTransactionWithECDSKey(
-        //       ecPem,
-        //       directoryServerID,
-        //       "2.1.0"
-        //    )
 
         // Доступные данные, для отправки на платежный шлюз
         val authRequestParams = transaction!!.authenticationRequestParameters!!

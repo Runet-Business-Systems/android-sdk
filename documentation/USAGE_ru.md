@@ -342,7 +342,7 @@ public class MainActivity extends AppCompatActivity {
     SDKPayment.init(
         SDKConfigBuilder(this)
             .keyProvider(
-                RemoteKeyProvider("https://securepayments.sberbank.ru/payment/se/keys.do")
+                RemoteKeyProvider("https://securepayments.bank.ru/payment/se/keys.do")
             )
             .cardInfoProvider(
                 RemoteCardInfoProvider(
@@ -360,7 +360,7 @@ public class MainActivity extends AppCompatActivity {
     SDKPayment.init(
         SDKConfigBuilder(this)
             .keyProvider(
-                RemoteKeyProvider("https://securepayments.sberbank.ru/payment/se/keys.do")
+                RemoteKeyProvider("https://securepayments.bank.ru/payment/se/keys.do")
             ).build()
     )
 ```
@@ -534,7 +534,7 @@ private fun createGooglePayConfig() : GooglePayPaymentConfig {
                         type = GoogleTokenizationSpecificationType.PAYMENT_GATEWAY
                         parameters =
                             TokenizationSpecificationParameters.tokenizationSpecificationParametersCreate {
-                                gateway = "sberbank"
+                                gateway = "bank"
                                 gatewayMerchantId = "sbersafe_test"
                             }
                     }
