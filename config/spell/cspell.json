@@ -38,6 +38,7 @@
     "*.bat",
     "*.pro",
     "*.exec",
+    "*.jks",
     "EMVCo_3DS_*.pdf",
     "local.properties"
   ],

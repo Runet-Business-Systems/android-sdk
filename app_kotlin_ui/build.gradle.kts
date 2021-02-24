@@ -7,6 +7,14 @@ plugins {
 }
 
 android {
+    signingConfigs {
+        create("release") {
+            storeFile = file("keys.jks")
+            keyAlias = "key"
+            storePassword = "123456"
+            keyPassword = "123456"
+        }
+    }
     compileSdkVersion(30)
     buildToolsVersion("30.0.2")
 
@@ -22,7 +30,8 @@ android {
     buildTypes {
         getByName("release") {
             isMinifyEnabled = false
-            proguardFiles(getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro")
+            proguardFiles(getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro", "proguard-sdk-three-ds.pro", "proguard-sdk-ui.pro")
+            signingConfig = signingConfigs.getByName("release")
         }
     }
     sourceSets {

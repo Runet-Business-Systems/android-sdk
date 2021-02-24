@@ -25,3 +25,8 @@ Before building examples, you must run the command
 ```
 
 The script will build and add the library files to the examples (in the libs folder).
+
+## Using the SDK with ProGuard
+
+When using the SDK, you need to migrate the rules files to the build.gradle project config file.
+The rules files are located in the project root folder (proguard-sdk-three-ds.pro, proguard-sdk-ui.pro).
